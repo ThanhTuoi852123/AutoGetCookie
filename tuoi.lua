@@ -34,7 +34,7 @@ while task.wait(0.2) do
         local rootPart = v:FindFirstChild("HumanoidRootPart")
         if rootPart and rootPart:FindFirstChild("Info") then
             local overhead = rootPart.Info:FindFirstChild("AnimalOverhead")
-            if overhead and overhead:FindFirstChild("Rarity") and overhead.Rarity.Text:lower() == "secret" then
+            if overhead and overhead:FindFirstChild("Rarity") and overhead.Rarity.Text:lower() == "epic" then
                 
                 if not done[v] then
                     -- Đuổi theo cho đến khi đủ gần
