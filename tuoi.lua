@@ -23,8 +23,6 @@ local function followTarget(targetPart)
             CFrame = CFrame.new(targetPart.Position + Vector3.new(0, 2, 0))
         })
         tween:Play()
-        tween.Completed:Wait()
-
         task.wait(0.05) -- chờ ngắn trước bước tiếp theo
     end
 end
