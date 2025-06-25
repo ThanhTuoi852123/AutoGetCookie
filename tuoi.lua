@@ -1,14 +1,11 @@
 print(1)
-local TweenService = game:GetService("TweenService")
-local HttpService = game:GetService("HttpService")
-local player = game.Players.LocalPlayer
-local char = player.Character or player.CharacterAdded:Wait()
-local hrp = char:WaitForChild("HumanoidRootPart")
+
 
 local done = {}
 local FIRE_DISTANCE = 7
 local MOVE_SPEED = 25
-
+local TweenService = game:GetService("TweenService")
+local HttpService = game:GetService("HttpService")
 -- Hàm tính khoảng cách
 local function getDistance(a, b)
     return (a - b).Magnitude
@@ -30,6 +27,9 @@ end
 
 while task.wait(0.2) do
     local success, err = pcall(function()
+    local player = game.Players.LocalPlayer
+    local char = player.Character or player.CharacterAdded:Wait()
+    local hrp = char:WaitForChild("HumanoidRootPart")
     for _, v in pairs(workspace.MovingAnimals:GetChildren()) do
         local rootPart = v:FindFirstChild("HumanoidRootPart")
         if rootPart and rootPart:FindFirstChild("Info") then
