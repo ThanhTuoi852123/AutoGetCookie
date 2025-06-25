@@ -1,3 +1,4 @@
+print(1)
 local TweenService = game:GetService("TweenService")
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
