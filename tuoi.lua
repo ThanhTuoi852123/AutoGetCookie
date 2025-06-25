@@ -6,7 +6,7 @@ local hrp = char:WaitForChild("HumanoidRootPart")
 
 local done = {}
 local FIRE_DISTANCE = 7
-local MOVE_SPEED = 25
+local MOVE_SPEED = 50
 
 -- Hàm tính khoảng cách
 local function getDistance(a, b)
@@ -28,6 +28,7 @@ local function followTarget(targetPart)
 end
 
 while task.wait(0.2) do
+    local success, err = pcall(function()
     for _, v in pairs(workspace.MovingAnimals:GetChildren()) do
         local rootPart = v:FindFirstChild("HumanoidRootPart")
         if rootPart and rootPart:FindFirstChild("Info") then
@@ -72,4 +73,5 @@ while task.wait(0.2) do
             end
         end
     end
+        end)
 end
