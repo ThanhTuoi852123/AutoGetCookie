@@ -7,7 +7,7 @@ local hrp = char:WaitForChild("HumanoidRootPart")
 
 local done = {}
 local FIRE_DISTANCE = 7
-local MOVE_SPEED = 50
+local MOVE_SPEED = 25
 
 -- Hàm tính khoảng cách
 local function getDistance(a, b)
