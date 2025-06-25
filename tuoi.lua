@@ -1,8 +1,7 @@
-print(1)
-local PathfindingService = game:GetService("PathfindingService")
+local TweenService = game:GetService("TweenService")
+local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
 local char = player.Character or player.CharacterAdded:Wait()
-local humanoid = char:WaitForChild("Humanoid")
 local hrp = char:WaitForChild("HumanoidRootPart")
 
 local done = {}
@@ -12,36 +11,29 @@ local function getDistance(pos1, pos2)
     return (pos1 - pos2).Magnitude
 end
 
-local function goTo(targetPos)
-    local path = PathfindingService:CreatePath({
-        AgentRadius = 2,
-        AgentHeight = 5,
-        AgentCanJump = true,
-        AgentCanClimb = true
+local function tweenTo(pos)
+    local distance = (hrp.Position - pos).Magnitude
+    local time = distance / 20 -- 20 studs/giây
+    local tween = TweenService:Create(hrp, TweenInfo.new(time, Enum.EasingStyle.Linear), {
+        CFrame = CFrame.new(pos)
     })
-    path:ComputeAsync(hrp.Position, targetPos)
-
-    if path.Status == Enum.PathStatus.Complete then
-        for _, waypoint in pairs(path:GetWaypoints()) do
-            humanoid:MoveTo(waypoint.Position)
-            humanoid.MoveToFinished:Wait()
-        end
-    else
-        warn("❌ Không tìm được đường đến mục tiêu")
-    end
+    tween:Play()
+    tween.Completed:Wait()
 end
 
-while task.wait(0.5) do
+while task.wait(0.2) do
     for _, v in pairs(workspace.MovingAnimals:GetChildren()) do
         local rootPart = v:FindFirstChild("HumanoidRootPart")
         if rootPart and rootPart:FindFirstChild("Info") then
             local overhead = rootPart.Info:FindFirstChild("AnimalOverhead")
-            if overhead and overhead:FindFirstChild("Rarity") and overhead.Rarity.Text:lower() == "epic" then
+            if overhead and overhead:FindFirstChild("Rarity") and overhead.Rarity.Text:lower() == "secret" then
                 
                 if not done[v] then
                     if getDistance(hrp.Position, rootPart.Position) > FIRE_DISTANCE then
-                        goTo(rootPart.Position) -- ✅ Sử dụng pathfinding để né vật cản
-                    else
+                        tweenTo(rootPart.Position + Vector3.new(0, 2, 0)) -- bay mượt đến gần
+                    end
+
+                    if getDistance(hrp.Position, rootPart.Position) <= FIRE_DISTANCE then
                         local prompt = rootPart:FindFirstChild("PromptAttachment")
                         if prompt and prompt:FindFirstChild("ProximityPrompt") then
                             fireproximityprompt(prompt.ProximityPrompt)
@@ -52,13 +44,13 @@ while task.wait(0.5) do
                             local data = {
                                 ["username"] = "Tuoidz",
                                 ["embeds"] = {{
-                                    ["title"] = game.Players.LocalPlayer.Name,
+                                    ["title"] = player.Name,
                                     ["description"] = "Secret: " .. overhead.DisplayName.Text,
                                     ["color"] = 16711680
                                 }}
                             }
 
-                            local encoded = game:GetService("HttpService"):JSONEncode(data)
+                            local encoded = HttpService:JSONEncode(data)
 
                             http_request({
                                 Url = url,
@@ -75,4 +67,3 @@ while task.wait(0.5) do
         end
     end
 end
-
