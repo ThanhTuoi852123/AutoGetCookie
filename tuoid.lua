@@ -103,7 +103,7 @@ function auto_buy_or_farm()
     local char = player.Character or player.CharacterAdded:Wait()
     local humanoid = char:WaitForChild("Humanoid")
     local hrp = char:WaitForChild("HumanoidRootPart")
-
+    local FIRE_DISTANCE = 7
     local tuoi = getpot()
     local function getDistance(pos1, pos2)
             return (pos1 - pos2).Magnitude
@@ -112,7 +112,7 @@ function auto_buy_or_farm()
         local highestOwnedPrice = get_highest_price_brain(tuoi)
         local done = {} -- để tránh bắt 2 lần
 
-        local FIRE_DISTANCE = 7
+        
         
 
         for _, v in pairs(workspace.MovingAnimals:GetChildren()) do
