@@ -48,8 +48,9 @@ function get_lowest_price_brain(tuoi)
         local attachment = spawn and spawn:FindFirstChild("Attachment")
         local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
         local price = overhead and overhead:FindFirstChild("Price")
+        local rarity = overhead and overhead:FindFirstChild("Rarity")
 
-        if price and price.Text then
+        if price and price.Text and rarity:lower() ~= "secret" then
             local value = parse_price(price.Text)
 
             if value and value < lowestPrice then
@@ -106,7 +107,7 @@ function auto_buy_or_farm()
     local tuoi = getpot()
     local function getDistance(pos1, pos2)
             return (pos1 - pos2).Magnitude
-        end
+    end
     if check_brain(tuoi) == false then
         local highestOwnedPrice = get_highest_price_brain(tuoi)
         local done = {} -- để tránh bắt 2 lần
