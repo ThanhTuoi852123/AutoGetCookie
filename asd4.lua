@@ -152,16 +152,20 @@ function auto_buy_or_farm()
                                 found = true
                                 while task.wait() do
                                     local rootPart = v:FindFirstChild("HumanoidRootPart")
-                                    if getDistance(hrp.Position, rootPart.Position) > FIRE_DISTANCE then
-                                        humanoid:MoveTo(rootPart.Position)
-                                    else
-                                        local prompt = rootPart:FindFirstChild("PromptAttachment")
-                                        if prompt and prompt:FindFirstChild("ProximityPrompt") then
-                                            fireproximityprompt(prompt.ProximityPrompt)
-                                            done[v] = true
-                                            print("Đã bắt SECRET giá trị:", value)
-                                            break
+                                    if rootPart then
+                                        if getDistance(hrp.Position, rootPart.Position) > FIRE_DISTANCE then
+                                            humanoid:MoveTo(rootPart.Position)
+                                        else
+                                            local prompt = rootPart:FindFirstChild("PromptAttachment")
+                                            if prompt and prompt:FindFirstChild("ProximityPrompt") then
+                                                fireproximityprompt(prompt.ProximityPrompt)
+                                                done[v] = true
+                                                print("Đã bắt SECRET giá trị:", value)
+                                                break
+                                            end
                                         end
+                                    else
+                                        break
                                     end
                                 end
                             end
