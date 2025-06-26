@@ -93,8 +93,8 @@ function sell(tuoi)
         local hitbox = v:FindFirstChild("Claim") and v.Claim:FindFirstChild("Hitbox")
         if hitbox and hitbox:FindFirstChildWhichIsA("TouchTransmitter") then
             humanoid:MoveTo(hitbox.Position)
+            humanoid.MoveToFinished:Wait() 
         end
-        task.wait(0.5)
     end
 end
 function chase_and_catch(humanoid, rootPart)
@@ -131,6 +131,7 @@ function auto_buy_or_farm()
     local function getDistance(pos1, pos2)
             return (pos1 - pos2).Magnitude
     end
+    local done = {} -- để tránh bắt 2 lần
     while task.wait(1) do
         local player = game.Players.LocalPlayer
         local char = player.Character or player.CharacterAdded:Wait()
@@ -139,7 +140,7 @@ function auto_buy_or_farm()
         local found = false
         if check_brain(tuoi) == false then
             local highestOwnedPrice = get_highest_price_brain(tuoi)
-            local done = {} -- để tránh bắt 2 lần
+            
             for _, v in pairs(workspace.MovingAnimals:GetChildren()) do
                 local rootPart = v:FindFirstChild("HumanoidRootPart")
                 if rootPart and rootPart:FindFirstChild("Info") then
