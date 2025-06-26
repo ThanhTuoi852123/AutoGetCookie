@@ -96,6 +96,8 @@ function sell(tuoi)
             humanoid.MoveToFinished:Wait() 
         end
     end
+    humanoid:MoveTo(tuoi.Spawn.Position)
+    humanoid.MoveToFinished:Wait()
 end
 function chase_and_catch(humanoid, rootPart)
     local FIRE_DISTANCE = 7
@@ -153,10 +155,7 @@ function auto_buy_or_farm()
                     if (value > tonumber(highestOwnedPrice) or value > tonumber(sdf)) and not done[v] then
                             if currentCash >= value then
                                 found = true
-                                if getDistance(hrp.Position, tuoi.Spawn.Position) < 20 then
-                                    humanoid:MoveTo(tuoi.Spawn.Position)
-                                    humanoid.MoveToFinished:Wait()
-                                end
+                                    
                                 while task.wait() do
                                     local rootPart = v:FindFirstChild("HumanoidRootPart")
                                     if rootPart then
