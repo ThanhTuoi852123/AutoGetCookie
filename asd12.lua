@@ -153,7 +153,7 @@ function auto_buy_or_farm()
                     if (value > tonumber(highestOwnedPrice) or value > tonumber(sdf)) and not done[v] then
                             if currentCash >= value then
                                 found = true
-                                if getDistance(hrp.Position, tuoi.Spawn.Position) < 20
+                                if getDistance(hrp.Position, tuoi.Spawn.Position) < 20 then
                                     humanoid:MoveTo(tuoi.Spawn.Position)
                                     humanoid.MoveToFinished:Wait()
                                 end
