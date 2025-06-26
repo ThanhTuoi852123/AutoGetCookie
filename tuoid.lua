@@ -147,7 +147,7 @@ function auto_buy_or_farm()
     else
         local s,a = get_lowest_price_brain(tuoi)
         if getDistance(hrp.Position, s.Claim.Hitbox.Position) > FIRE_DISTANCE then
-            humanoid:MoveTo(rootPart.Position)
+            humanoid:MoveTo(s.Claim.Hitbox.Position)
         else
             fireproximityprompt(s.Base.Spawn.PromptAttachment.ProximityPrompt)
         end
