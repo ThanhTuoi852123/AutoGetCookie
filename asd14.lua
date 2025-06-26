@@ -152,7 +152,7 @@ function auto_buy_or_farm()
                     local value = tonumber(parse_price(price.Text))
                     local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
                     local nho, sdf = get_lowest_price_brain(tuoi)
-                    if (value > tonumber(highestOwnedPrice) or value > tonumber(sdf)) and not done[v] then
+                    if value > tonumber(highestOwnedPrice) and not done[v] then
                             if currentCash >= value then
                                 found = true
                                     
@@ -173,6 +173,29 @@ function auto_buy_or_farm()
                                     end
                                 end
                             end
+                    else
+                        if value > tonumber(sdf) and not done[v] then
+                            if currentCash >= value then
+                                found = true
+                                    
+                                while task.wait() do
+                                    local rootPart = v:FindFirstChild("HumanoidRootPart")
+                                    if rootPart then
+                                        if getDistance(hrp.Position, rootPart.Position) > FIRE_DISTANCE then
+                                            humanoid:MoveTo(rootPart.Position)
+                                        else
+                                            local prompt = rootPart:FindFirstChild("PromptAttachment")
+                                            if prompt and prompt:FindFirstChild("ProximityPrompt") then
+                                                fireproximityprompt(prompt.ProximityPrompt)
+                                                done[v] = true
+                                            end
+                                        end
+                                    else
+                                        break
+                                    end
+                                end
+                            end
+                        end
                     end
                 end
             end
