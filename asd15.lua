@@ -200,6 +200,8 @@ function auto_buy_or_farm()
                 end
             end
         else
+            humanoid:MoveTo(tuoi.Spawn.Position)
+            humanoid.MoveToFinished:Wait()
             local s,a = get_lowest_price_brain(tuoi)
             for i = 1, 3 do
             if getDistance(hrp.Position, s.Claim.Hitbox.Position) > FIRE_DISTANCE then
