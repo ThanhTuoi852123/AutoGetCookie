@@ -117,11 +117,17 @@ function auto_buy_or_farm()
 
         for _, v in pairs(workspace.MovingAnimals:GetChildren()) do
             local rootPart = v:FindFirstChild("HumanoidRootPart")
+            print(1)
             if rootPart and rootPart:FindFirstChild("Info") then
+                print(2)
                 local overhead = rootPart.Info:FindFirstChild("AnimalOverhead")
+                print(3)
                 local price = overhead and overhead:FindFirstChild("Price")
+                print(price)
                 if price and tonumber(price.Text) then
+                    print(5)
                     local value = tonumber(price.Text)
+                    print(6)
                     local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
                     print(currentCash)
                     if value > tonumber(highestOwnedPrice) and not done[v] then
