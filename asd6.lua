@@ -161,8 +161,6 @@ function auto_buy_or_farm()
                                             if prompt and prompt:FindFirstChild("ProximityPrompt") then
                                                 fireproximityprompt(prompt.ProximityPrompt)
                                                 done[v] = true
-                                                print("Đã bắt SECRET giá trị:", value)
-                                                break
                                             end
                                         end
                                     else
