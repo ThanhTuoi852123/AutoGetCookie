@@ -7,7 +7,7 @@ function getpot()
     end
 end
 function spin()
-    game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Net"):WaitForChild("RE/RainbowSpinWheelService/Spin"):FireServer()
+    game:GetService("ReplicatedStorage"):FindFirstChild("Packages"):FindFirstChild("Net"):FindFirstChild("RE/RainbowSpinWheelService/Spin"):FireServer()
 end
 function check_brain(tuoi)
     for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
@@ -89,7 +89,7 @@ end
 
 function sell(tuoi)
     local player = game.Players.LocalPlayer
-    local humanoid = player.Character and player.Character:WaitForChild("Humanoid")
+    local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
     for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
         local hitbox = v:FindFirstChild("Claim") and v.Claim:FindFirstChild("Hitbox")
         if hitbox and hitbox:FindFirstChildWhichIsA("TouchTransmitter") then
@@ -101,8 +101,8 @@ end
 function auto_buy_or_farm()
     local player = game.Players.LocalPlayer
     local char = player.Character or player.CharacterAdded:Wait()
-    local humanoid = char:WaitForChild("Humanoid")
-    local hrp = char:WaitForChild("HumanoidRootPart")
+    local humanoid = char:FindFirstChild("Humanoid")
+    local hrp = char:FindFirstChild("HumanoidRootPart")
     local FIRE_DISTANCE = 7
     local tuoi = getpot()
     local function getDistance(pos1, pos2)
@@ -122,7 +122,7 @@ function auto_buy_or_farm()
                 local price = overhead and overhead:FindFirstChild("Price")
                 if price and tonumber(price.Text) then
                     local value = tonumber(price.Text)
-                    local currentCash = player:WaitForChild("leaderstats"):WaitForChild("Cash").Value
+                    local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
                     print(currentCash)
                     if value > tonumber(highestOwnedPrice) and not done[v] then
                         if currentCash >= value then
