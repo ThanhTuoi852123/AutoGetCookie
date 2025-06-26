@@ -124,13 +124,13 @@ function auto_buy_or_farm()
                 print(3)
                 local price = overhead and overhead:FindFirstChild("Price")
                 print(price)
-                if price and tonumber(price.Text) then
-                    print(5)
-                    local value = tonumber(price.Text)
-                    print(6)
-                    local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
-                    print(currentCash)
-                    if value > tonumber(highestOwnedPrice) and not done[v] then
+
+                print(5)
+                local value = tonumber(price.Text)
+                print(6)
+                local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
+                print(currentCash)
+                if value > tonumber(highestOwnedPrice) and not done[v] then
                         if currentCash >= value then
                             -- đủ tiền → di chuyển và bắt
                             if getDistance(hrp.Position, rootPart.Position) > FIRE_DISTANCE then
@@ -146,7 +146,6 @@ function auto_buy_or_farm()
                         else
                             sell(tuoi)
                         end
-                    end
                 end
             end
         end
