@@ -138,7 +138,9 @@ function auto_buy_or_farm()
         local humanoid = char:FindFirstChild("Humanoid")
         local hrp = char:FindFirstChild("HumanoidRootPart")
         local found = false
-        if check_brain(tuoi) == false then
+        local hcekh = check_brain(tuoi)
+        print(hcekh)
+        if hcekh == false then
             local highestOwnedPrice = get_highest_price_brain(tuoi)
             print(highestOwnedPrice)
             for _, v in pairs(workspace.MovingAnimals:GetChildren()) do
@@ -175,10 +177,14 @@ function auto_buy_or_farm()
             end
         else
             local s,a = get_lowest_price_brain(tuoi)
+            for i = 1, 3 do
             if getDistance(hrp.Position, s.Claim.Hitbox.Position) > FIRE_DISTANCE then
                 humanoid:MoveTo(s.Claim.Hitbox.Position)
+                humanoid.MoveToFinished:Wait() 
             else
                 fireproximityprompt(s.Base.Spawn.PromptAttachment.ProximityPrompt)
+                break
+            end
             end
             
         end
