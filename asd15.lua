@@ -215,6 +215,8 @@ function auto_buy_or_farm()
             
         end
         if not found then
+            humanoid:MoveTo(tuoi.Spawn.Position)
+            humanoid.MoveToFinished:Wait()
             sell(tuoi)
         end
     end
