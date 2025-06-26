@@ -160,6 +160,7 @@ function auto_buy_or_farm()
                                             fireproximityprompt(prompt.ProximityPrompt)
                                             done[v] = true
                                             print("Đã bắt SECRET giá trị:", value)
+                                            break
                                         end
                                     end
                                 end
