@@ -104,15 +104,15 @@ function auto_buy_or_farm()
     local hrp = char:WaitForChild("HumanoidRootPart")
 
     local tuoi = getpot()
-
+    local function getDistance(pos1, pos2)
+            return (pos1 - pos2).Magnitude
+        end
     if check_brain(tuoi) == false then
         local highestOwnedPrice = get_highest_price_brain(tuoi)
         local done = {} -- để tránh bắt 2 lần
 
         local FIRE_DISTANCE = 7
-        local function getDistance(pos1, pos2)
-            return (pos1 - pos2).Magnitude
-        end
+        
 
         for _, v in pairs(workspace.MovingAnimals:GetChildren()) do
             local rootPart = v:FindFirstChild("HumanoidRootPart")
