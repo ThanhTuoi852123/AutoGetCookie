@@ -1,393 +1,158 @@
--- bypass anticheat script
 
-local localplr = game.Players.LocalPlayer
-getgenv().deletewhendupefound = true
-local on = true
-local lib = loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Lib-18698"))()
-lib.makelib("Steal a Brainrot (2AreYouMental110, Too overpowered?)")
-local tableofconnections = {}
-local posgoto = nil
-local sbase = false
-local sbox = Instance.new("SelectionBox")
-local gotobase = nil
-sbox.Parent = game.CoreGui
-local lastcfr = nil
-local gotoplace = nil
-local main = lib.maketab("Main")
-local autosteal = false
-lib.makelabel("This game has VERY good anticheat! However, you can just click on the base you wanna go to (toggle select base) and then click goto base!",main)
-lib.makelabel("Make sure to turn on Auto Steal before stealing their pets!",main)
-lib.maketoggle("Auto Steal (turn on before stealing, needs to wait a little to avoid anticheat)",main,function(bool)
-    autosteal = bool
-end)
-local pbt = false
-local donetools = {}
-lib.maketoggle("Spam Tools",main,function(bool)
-    pbt = bool
-end)
-local antiragdoll = false
-lib.maketoggle("Anti Ragdoll/Freeze",main,function(bool)
-    antiragdoll = bool
-end)
-lib.makelabel("",main)
-table.insert(tableofconnections,workspace.ChildAdded:Connect(function(c)
-    if c:IsA("Model") and c:FindFirstChild("RootPart") and c.RootPart:FindFirstChildWhichIsA("WeldConstraint") and c.RootPart:FindFirstChildWhichIsA("WeldConstraint").Part0 == localplr.Character.HumanoidRootPart then
-        task.wait(2.5)
-        if c.Parent == workspace and autosteal then
-            game.ReplicatedStorage.Packages.Net["RE/StealService/DeliverySteal"]:FireServer()
+function getpot()
+    for _,v in pairs(workspace.Plots:GetChildren()) do
+        if string.find(v.PlotSign.SurfaceGui.Frame.TextLabel.Text, game.Players.LocalPlayer.Name) then
+            return v
+        end
+    end
+end
+function spin()
+    game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Net"):WaitForChild("RE/RainbowSpinWheelService/Spin"):FireServer()
+end
+function check_brain(tuoi)
+    for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
+        local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
+        local attachment = spawn and spawn:FindFirstChild("Attachment")
+        if not attachment then
+            return false
+        end
+    end
+    return true
+end
+function parse_price(text)
+    local numberPart = text:match("[0-9%.]+") -- bắt số & dấu chấm đầu tiên
+    local suffix = text:match("[KMB]") -- kiểm tra có hậu tố K/M/B không
+
+    local multiplier = 1
+    if suffix == "K" then
+        multiplier = 1_000
+    elseif suffix == "M" then
+        multiplier = 1_000_000
+    elseif suffix == "B" then
+        multiplier = 1_000_000_000
+    end
+
+    local number = tonumber(numberPart)
+    if number then
+        return number * multiplier
+    end
+
+    return nil
+end
+function get_lowest_price_brain(tuoi)
+    local lowestPrice = math.huge
+    local weakestBrain = nil
+
+    for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
+        local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
+        local attachment = spawn and spawn:FindFirstChild("Attachment")
+        local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
+        local price = overhead and overhead:FindFirstChild("Price")
+
+        if price and price.Text then
+            local value = parse_price(price.Text)
+
+            if value and value < lowestPrice then
+                lowestPrice = value
+                weakestBrain = v
+            end
+        end
+    end
+
+    return weakestBrain, lowestPrice
+end
+
+
+
+
+function get_highest_price_brain(tuoi)
+    local highestPrice = 0
+    local bestBrain = nil
+
+    for name, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
+        local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
+        local attachment = spawn and spawn:FindFirstChild("Attachment")
+        local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
+        local price = overhead and overhead:FindFirstChild("Price")
+
+        if price and price.Text then
+            local value = parse_price(price.Text)
+            if value and value > highestPrice then
+                highestPrice = value
+            end
+        end
+    end
+
+    return highestPrice
+end
+
+function sell(tuoi)
+    local player = game.Players.LocalPlayer
+    local humanoid = player.Character and player.Character:WaitForChild("Humanoid")
+    for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
+        local hitbox = v:FindFirstChild("Claim") and v.Claim:FindFirstChild("Hitbox")
+        if hitbox and hitbox:FindFirstChildWhichIsA("TouchTransmitter") then
+            humanoid:MoveTo(hitbox.Position)
+        end
+        task.wait(0.5)
+    end
+end
+function auto_buy_or_farm()
+    local player = game.Players.LocalPlayer
+    local char = player.Character or player.CharacterAdded:Wait()
+    local humanoid = char:WaitForChild("Humanoid")
+    local hrp = char:WaitForChild("HumanoidRootPart")
+
+    local tuoi = getpot()
+
+    if check_brain(tuoi) == false then
+        local highestOwnedPrice = get_highest_price_brain(tuoi)
+        local done = {} -- để tránh bắt 2 lần
+
+        local FIRE_DISTANCE = 7
+        local function getDistance(pos1, pos2)
+            return (pos1 - pos2).Magnitude
+        end
+
+        for _, v in pairs(workspace.MovingAnimals:GetChildren()) do
+            local rootPart = v:FindFirstChild("HumanoidRootPart")
+            if rootPart and rootPart:FindFirstChild("Info") then
+                local overhead = rootPart.Info:FindFirstChild("AnimalOverhead")
+                local price = overhead and overhead:FindFirstChild("Price")
+                if price and tonumber(price.Text) then
+                    local value = tonumber(price.Text)
+                    local currentCash = player:WaitForChild("leaderstats"):WaitForChild("Cash").Value
+
+                    if value > tonumber(highestOwnedPrice) and not done[v] then
+                        if currentCash >= value then
+                            -- đủ tiền → di chuyển và bắt
+                            if getDistance(hrp.Position, rootPart.Position) > FIRE_DISTANCE then
+                                humanoid:MoveTo(rootPart.Position)
+                            else
+                                local prompt = rootPart:FindFirstChild("PromptAttachment")
+                                if prompt and prompt:FindFirstChild("ProximityPrompt") then
+                                    fireproximityprompt(prompt.ProximityPrompt)
+                                    done[v] = true
+                                    print("Đã bắt SECRET giá trị:", value)
+                                end
+                            end
+                        else
+                            sell(tuoi)
+                        end
+                    end
+                end
+            end
         end
     else
-        local a = 0
-        repeat
-            a = a + 1
-            if c:IsA("Model") and c:FindFirstChild("RootPart") and c.RootPart:FindFirstChildWhichIsA("WeldConstraint") and c.RootPart:FindFirstChildWhichIsA("WeldConstraint").Part0 == localplr.Character.HumanoidRootPart then
-                task.wait(2.5)
-                if c.Parent == workspace and autosteal then
-                    game.ReplicatedStorage.Packages.Net["RE/StealService/DeliverySteal"]:FireServer()
-                end
-                break
-            end
-            task.wait(.05)
-        until a > 10
-    end
-end))
-lib.maketoggle("Select Base",main,function(bool)
-    sbase = bool
-    if sbase then
-        sbox.Transparency = 0
-    else
-        sbox.Transparency = 1
-    end
-end)
-local notusing = true
-lib.makebutton("Goto Base (WILL OOF YOU)",main,function()
-    if gotobase and notusing then
-        notusing = false
-        pcall(function()
-            gotoplace = gotobase.AnimalPodiums["1"]:GetPivot()+Vector3.new(0,3.5,0)
-            localplr.Character.Humanoid.Health = -1
-            task.wait(3.5)
-            gotoplace = nil
-        end)
-        notusing = true
-    end
-end)
-lib.makebutton("Goto Base (Second Floor, WILL OOF YOU)",main,function()
-    if gotobase and notusing then
-        notusing = false
-        pcall(function()
-            gotoplace = gotobase.AnimalPodiums["11"]:GetPivot()+Vector3.new(0,3.5,0)
-            localplr.Character.Humanoid.Health = -1
-            task.wait(3.5)
-            gotoplace = nil
-        end)
-        notusing = true
-    end
-end)
-lib.makelabel("",main)
-local ipp = false
-local pp = {} -- no dont joke about this is "proximity prompts"
-function dop(p)
-    if p.Base.Spawn.PromptAttachment:FindFirstChild("ProximityPrompt") then
-        table.insert(pp,p.Base.Spawn.PromptAttachment.ProximityPrompt)
-        if ipp then
-            p.Base.Spawn.PromptAttachment.ProximityPrompt.HoldDuration = 0
+        local s,a = get_lowest_price_brain(tuoi)
+        if getDistance(hrp.Position, s.Claim.Hitbox.Position) > FIRE_DISTANCE then
+            humanoid:MoveTo(rootPart.Position)
+        else
+            fireproximityprompt(s.Base.Spawn.PromptAttachment.ProximityPrompt)
         end
-    end
-    table.insert(tableofconnections,p.Base.Spawn.PromptAttachment.ChildAdded:Connect(function(c)
-        if c:IsA("ProximityPrompt") then
-            table.insert(pp,c)
-            if ipp then
-                c.HoldDuration = 0
-            end
-        end
-    end))
-end
-for i,v in pairs(workspace.Plots:GetChildren()) do
-    if v:FindFirstChild("AnimalPodiums") then
-        for i,v in pairs(v.AnimalPodiums:GetChildren()) do
-            dop(v)
-        end
-        table.insert(tableofconnections,v.AnimalPodiums.ChildAdded:Connect(dop))
+        
     end
 end
-lib.maketoggle("Instant Proximity Prompts",main,function(bool)
-    ipp = bool
-    if ipp then
-        for i,v in pairs(pp) do
-            v.HoldDuration = 0
-        end
-    end
-end)
-lib.makelabel("",main)
-local jp = false
-lib.maketoggle("Gravity (better)",main,function(bool)
-	jp = bool
-	localplr.Character.Humanoid.UseJumpPower = true
-	if not jp then
-		workspace.Gravity = 196.2
-		localplr.Character.Humanoid.JumpPower = 50
-	end
-end)
-lib.makelabel("",main)
-lib.makebutton("Noclip Camera (look through invisible walls, by Infinite Yield)",main,function()
-	local sc = (debug and debug.setconstant) or setconstant
-	local gc = (debug and debug.getconstants) or getconstants
-	if not sc or not getgc or not gc then
-		print('Incompatible Exploit', 'Your exploit does not support this command (missing setconstant or getconstants or getgc)')
-	end
-	local pop = localplr.PlayerScripts.PlayerModule.CameraModule.ZoomController.Popper
-	for _, v in pairs(getgc()) do
-		if type(v) == 'function' and getfenv(v).script == pop then
-			for i, v1 in pairs(gc(v)) do
-				if tonumber(v1) == .25 then
-					sc(v, i, 0)
-				elseif tonumber(v1) == 0 then
-					sc(v, i, .25)
-				end
-			end
-		end
-	end
-end)
-local mouse = localplr:GetMouse()
-local loopclickpart = Instance.new("Part")
-loopclickpart.Anchored = true
-loopclickpart.CanCollide = false
-loopclickpart.Color = Color3.fromRGB(0,255,0)
-loopclickpart.Shape = Enum.PartType.Ball
-loopclickpart.Size = Vector3.new(2,2,2)
-loopclickpart.Transparency = 1
-loopclickpart.Material = Enum.Material.SmoothPlastic
-loopclickpart.Parent = workspace
-local loopclick = false
-lib.maketoggle("Select Click Position",main,function(bool)
-    loopclick = bool
-end)
-table.insert(tableofconnections,mouse.Button1Down:Connect(function()
-    if loopclick then
-        local hit = CFrame.new(mouse.hit.Position)
-        if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-            hit = hit + Vector3.new(0,game.Players.LocalPlayer.Character.HumanoidRootPart.Size.Y*1.5,0)
-            loopclickpart.CFrame = hit
-            loopclickpart.Transparency = 0
-            posgoto = hit
-        end
-    elseif sbase and mouse.Target then
-        gotobase = nil
-        for i,v in pairs(workspace.Plots:GetChildren()) do
-            if mouse.Target:IsDescendantOf(v) then
-                gotobase = v
-            end
-        end
-        if gotobase then
-            sbox.Adornee = gotobase
-        end
-    end
-end))
-local precentagetext = nil
-local lgt = false
-lib.maketoggle("Loop goto click position",main,function(bool)
-    lgt = bool
-    if posgoto and lgt then
-        local pos = posgoto
-        posgoto = nil
-        loopclickpart.Transparency = 1
-        local timebefore = tick()
-        local posdiff = (game.Players.LocalPlayer.Character:GetPivot().Position - pos.Position).Magnitude
-        repeat
-            task.wait()
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
-			lib.updatelabel(tostring(math.round(timebefore+(posdiff/12) - tick())).." Seconds Left",precentagetext)
-        until not lgt -- fastest is inf but like
-    end
-end)
-precentagetext = lib.makelabel("??? Seconds Left",main)
-lib.maketextbox("Proximity Prompt Range",main,function(txt)
-    for i,v in pairs(workspace.Plots:GetDescendants()) do
-        if v:IsA("ProximityPrompt") then
-            v.MaxActivationDistance = tonumber(txt)
-        end
-    end
-end)
-lib.makeslider("HipHeight (not effective)",main,1,100,function(n)
-    localplr.Character.Humanoid.HipHeight = n
-end)
-lib.maketoggle("Show Hitboxes",main,function(bool)
-    for i,v in pairs(workspace.Plots:GetChildren()) do
-        if v:FindFirstChild("InvisibleWalls") then
-            for i,v in pairs(v.InvisibleWalls:GetChildren()) do
-                if v:FindFirstChild("Mesh") then
-                    v.Mesh:Destroy()
-                end
-                v.Transparency = (bool and 0.5) or 1
-            end
-        end
-        if v:FindFirstChild("LaserHitbox") then
-            for i,v in pairs(v.LaserHitbox:GetChildren()) do
-                if v:FindFirstChild("Mesh") then
-                    v.Mesh:Destroy()
-                end
-                v.Transparency = (bool and 0.5) or 1
-            end
-        end
-    end
-end)
-lib.maketoggle("Noclip Hitboxes (not effective)",main,function(bool)
-    for i,v in pairs(workspace.Plots:GetChildren()) do
-        if v:FindFirstChild("InvisibleWalls") then
-            for i,v in pairs(v.InvisibleWalls:GetChildren()) do
-                v.CanCollide = not bool
-            end
-        end
-        if v:FindFirstChild("LaserHitbox") then
-            for i,v in pairs(v.LaserHitbox:GetChildren()) do
-                v.CanCollide = not bool
-            end
-        end
-    end
-end)
-lib.makebutton("Tween To Base (not effective)",main,function()
-    local base = nil
-    for i,v in pairs(workspace.Plots:GetChildren()) do
-        if v:FindFirstChild("YourBase",true) and v:FindFirstChild("YourBase",true).Enabled then
-            base = v.DeliveryHitbox
-        end
-    end
-    if base then
-        local plrpos = localplr.Character.HumanoidRootPart.Position
-        local tppos = (base.Position - Vector3.new(0,base.Position.Y,0)) + Vector3.new(0,plrpos.Y,0)
-        game:GetService("TweenService"):Create(
-            localplr.Character.HumanoidRootPart,
-            TweenInfo.new((tppos - plrpos).Magnitude/localplr.Character.Humanoid.WalkSpeed,Enum.EasingStyle.Linear,Enum.EasingDirection.Out,0,false,0),
-            {CFrame = CFrame.new(tppos) * (localplr.Character.HumanoidRootPart.CFrame - plrpos),Velocity = Vector3.new(0,0,0)}
-        ):Play()
-    end
-end)
-local tptb = false
-lib.maketoggle("TP To Base (not effective)",main,function(bool)
-    tptb = bool
-    local base = nil
-    for i,v in pairs(workspace.Plots:GetChildren()) do
-        if v:FindFirstChild("YourBase",true) and v:FindFirstChild("YourBase",true).Enabled then
-            base = v.DeliveryHitbox
-        end
-    end
-	while tptb do
-		task.wait()
-		if base then
-			local plrpos = localplr.Character.HumanoidRootPart.Position
-			local tppos = (base.Position - Vector3.new(0,base.Position.Y,0)) + Vector3.new(0,plrpos.Y,0)
-			localplr.Character.HumanoidRootPart.CFrame = CFrame.new(tppos)
-		end
-	end
-end)
-local antitp = false
-lib.maketoggle("Anti Teleport (not effective)",main,function(bool)
-    antitp = bool
-end)
-function dotool(tool)
-	if tool:IsA("Tool") and not donetools[tool] then
-		donetools[tool] = true
-		coroutine.wrap(function()
-			while on do
-				task.wait()
-				pcall(function()
-					if pbt and (tool.Parent == localplr.Character or tool.Parent == localplr.Backpack) then
-						tool.Parent = localplr.Character
-						tool:Activate()
-					end
-				end)
-			end
-		end)()
-	elseif tool:IsA("BasePart") then
-		table.insert(tableofconnections,tool:GetPropertyChangedSignal("Anchored"):Connect(function()
-			if tool.Anchored and antiragdoll then
-				tool.Anchored = false
-			end
-		end))
-		table.insert(tableofconnections,tool.ChildAdded:Connect(function(c)
-			if c and (c:IsA("BallSocketConstraint") or c.Name == "Attachment" or v:IsA("HingeConstraint")) and c and c.Parent then
-				c:Destroy()
-				if tool.Parent and tool.Parent:FindFirstChild("Head") and tool.Parent.Head:FindFirstChild("Neck") then
-					tool.Parent.Head.Neck.Enabled = true
-				end
-				if tool.Parent and tool.Parent:FindFirstChild("HumanoidRootPart") then
-					tool.Parent.HumanoidRootPart.CanCollide = true
-				end
-				for i,v in pairs(tool:GetChildren()) do
-					if v:IsA("Motor6D") and v.Name ~= "Attachment" then
-						v.Enabled = true
-					end
-				end
-				for i=1,10 do
-					task.wait()
-					tool.Velocity = Vector3.new(0,0,0)
-				end
-			end
-		end))
-	elseif tool:IsA("Humanoid") then
-		table.insert(tableofconnections,tool.StateChanged:Connect(function()
-			if antiragdoll and (tool:GetState() == Enum.HumanoidStateType.Physics or tool:GetState() == Enum.HumanoidStateType.Ragdoll) then
-				tool:ChangeState(Enum.HumanoidStateType.GettingUp)
-			end
-		end))
-	end
-end
-function dochar(c)
-	table.insert(tableofconnections,c.ChildAdded:Connect(function(v)
-		dotool(v)
-	end))
-	for i,v in pairs(c:GetChildren()) do
-		dotool(v)
-	end
-end
-table.insert(tableofconnections,localplr.CharacterAdded:Connect(dochar))
-dochar(localplr.Character)
-coroutine.wrap(function()
-    while on do
-		local s,e = pcall(function()
-			lastcfr = localplr.Character.HumanoidRootPart.CFrame
-			task.wait()
-			if antitp and not lgt and lastcfr and (localplr.Character.HumanoidRootPart.Position - lastcfr.Position).Magnitude > 1 then
-				localplr.Character.HumanoidRootPart.CFrame = lastcfr
-			end
-			if jp then
-				workspace.Gravity = 50
-				localplr.Character.Humanoid.UseJumpPower = true
-				localplr.Character.Humanoid.JumpPower = 100
-			end
-			if gotoplace then
-			    localplr.Character.HumanoidRootPart.CFrame = gotoplace
-			end
-		end)
-		if not s then print(e) end
-    end
-end)()
-lib.ondestroyedfunc = function()
-    lgt = false
-    loopclickpart:Destroy()
-    for i,v in pairs(tableofconnections) do
-        v:Disconnect()
-    end
-    local bool = false
-    for i,v in pairs(workspace.Plots:GetChildren()) do
-        if v:FindFirstChild("InvisibleWalls") then
-            for i,v in pairs(v.InvisibleWalls:GetChildren()) do
-                v.Transparency = (bool and 0.5) or 1
-                v.CanCollide = not bool
-            end
-        end
-        if v:FindFirstChild("LaserHitbox") then
-            for i,v in pairs(v.LaserHitbox:GetChildren()) do
-                v.Transparency = (bool and 0.5) or 1
-                v.CanCollide = not bool
-            end
-        end
-    end
-	pbt = false
-	on = false
-	tptb = false
-	antiragdoll = false
-	loopclickpart:Destroy()
-	sbox:Destroy()
-end
+
+
+auto_buy_or_farm()
