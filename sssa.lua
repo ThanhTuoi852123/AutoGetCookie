@@ -127,6 +127,7 @@ function auto_buy_or_farm()
 
                 print(5)
                 local value = tonumber(price.Text)
+                print(value)
                 print(6)
                 local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
                 print(currentCash)
