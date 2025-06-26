@@ -148,6 +148,8 @@ function auto_buy_or_farm()
                     local price = overhead and overhead:FindFirstChild("Price")
                     local value = tonumber(parse_price(price.Text))
                     local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
+                    print(value)
+                    print(currentCash)
                     if value > tonumber(highestOwnedPrice) and not done[v] then
                             if currentCash >= value then
                                 found = true
