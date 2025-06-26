@@ -140,7 +140,7 @@ function auto_buy_or_farm()
         local found = false
         if check_brain(tuoi) == false then
             local highestOwnedPrice = get_highest_price_brain(tuoi)
-            
+            print(highestOwnedPrice)
             for _, v in pairs(workspace.MovingAnimals:GetChildren()) do
                 local rootPart = v:FindFirstChild("HumanoidRootPart")
                 if rootPart and rootPart:FindFirstChild("Info") then
