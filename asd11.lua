@@ -153,8 +153,10 @@ function auto_buy_or_farm()
                     if (value > tonumber(highestOwnedPrice) or value > tonumber(sdf)) and not done[v] then
                             if currentCash >= value then
                                 found = true
-                                humanoid:MoveTo(tuoi.Spawn.Position)
-                                humanoid.MoveToFinished:Wait()
+                                if getDistance(hrp.Position, tuoi.Spawn.Position) < 20
+                                    humanoid:MoveTo(tuoi.Spawn.Position)
+                                    humanoid.MoveToFinished:Wait()
+                                end
                                 while task.wait() do
                                     local rootPart = v:FindFirstChild("HumanoidRootPart")
                                     if rootPart then
