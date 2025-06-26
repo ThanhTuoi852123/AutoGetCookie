@@ -1,14 +1,15 @@
-
 function getpot()
-    for _,v in pairs(workspace.Plots:GetChildren()) do
+    for _, v in pairs(workspace.Plots:GetChildren()) do
         if string.find(v.PlotSign.SurfaceGui.Frame.TextLabel.Text, game.Players.LocalPlayer.Name) then
             return v
         end
     end
 end
+
 function spin()
     game:GetService("ReplicatedStorage"):FindFirstChild("Packages"):FindFirstChild("Net"):FindFirstChild("RE/RainbowSpinWheelService/Spin"):FireServer()
 end
+
 function check_brain(tuoi)
     for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
         local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
@@ -19,9 +20,10 @@ function check_brain(tuoi)
     end
     return true
 end
+
 function parse_price(text)
-    local numberPart = text:match("[0-9%.]+") -- bắt số & dấu chấm đầu tiên
-    local suffix = text:match("[KMB]") -- kiểm tra có hậu tố K/M/B không
+    local numberPart = text:match("[0-9%.]+")
+    local suffix = text:match("[KMB]")
 
     local multiplier = 1
     if suffix == "K" then
@@ -39,6 +41,7 @@ function parse_price(text)
 
     return nil
 end
+
 function get_lowest_price_brain(tuoi)
     local lowestPrice = math.huge
     local weakestBrain = nil
@@ -50,7 +53,7 @@ function get_lowest_price_brain(tuoi)
         local price = overhead and overhead:FindFirstChild("Price")
         local rarity = overhead and overhead:FindFirstChild("Rarity")
 
-        if price and price.Text and rarity.Text:lower() ~= "secret" then
+        if price and price.Text and rarity and rarity.Text:lower() ~= "secret" then
             local value = parse_price(price.Text)
 
             if value and value < lowestPrice then
@@ -63,14 +66,10 @@ function get_lowest_price_brain(tuoi)
     return weakestBrain, lowestPrice
 end
 
-
-
-
 function get_highest_price_brain(tuoi)
     local highestPrice = 0
-    local bestBrain = nil
 
-    for name, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
+    for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
         local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
         local attachment = spawn and spawn:FindFirstChild("Attachment")
         local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
@@ -98,62 +97,87 @@ function sell(tuoi)
         task.wait(0.5)
     end
 end
-function auto_buy_or_farm()
+
+-- NEW: Bám đuổi bắt quái vật đang di chuyển
+function chase_and_catch(humanoid, rootPart)
+    local FIRE_DISTANCE = 7
+    local MAX_ATTEMPTS = 150
+
+    for i = 1, MAX_ATTEMPTS do
+        local hrp = humanoid.Parent:FindFirstChild("HumanoidRootPart")
+        if not hrp or not rootPart then return false end
+
+        local dist = (hrp.Position - rootPart.Position).Magnitude
+        if dist > FIRE_DISTANCE then
+            humanoid:MoveTo(rootPart.Position)
+        else
+            local prompt = rootPart:FindFirstChild("PromptAttachment")
+            if prompt and prompt:FindFirstChild("ProximityPrompt") then
+                fireproximityprompt(prompt.ProximityPrompt)
+                print("✅ Đã bắt SECRET sau khi bám:", i, "lần")
+                return true
+            end
+        end
+
+        task.wait(0.1)
+    end
+
+    print("❌ Không bắt được (di chuyển quá nhanh?)")
+    return false
+end
+
+-- MAIN LOOP
+function auto_buy_or_farm_loop()
     local player = game.Players.LocalPlayer
     local char = player.Character or player.CharacterAdded:Wait()
-    local humanoid = char:FindFirstChild("Humanoid")
-    local hrp = char:FindFirstChild("HumanoidRootPart")
+    local humanoid = char:WaitForChild("Humanoid")
     local FIRE_DISTANCE = 7
-    local tuoi = getpot()
-    local function getDistance(pos1, pos2)
-            return (pos1 - pos2).Magnitude
-    end
-    if check_brain(tuoi) == false then
+
+    while true do
+        if check_brain(tuoi) == false then
+        local tuoi = getpot()
         local highestOwnedPrice = get_highest_price_brain(tuoi)
-        local done = {} -- để tránh bắt 2 lần
-        print(highestOwnedPrice)
-        
-        
+        local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
+        local found = false
 
         for _, v in pairs(workspace.MovingAnimals:GetChildren()) do
             local rootPart = v:FindFirstChild("HumanoidRootPart")
             if rootPart and rootPart:FindFirstChild("Info") then
                 local overhead = rootPart.Info:FindFirstChild("AnimalOverhead")
                 local price = overhead and overhead:FindFirstChild("Price")
-                local value = tonumber(parse_price(price.Text))
-                local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
-                print(currentCash)
-                if value > tonumber(highestOwnedPrice) and not done[v] then
-                        if currentCash >= value then
-                            -- đủ tiền → di chuyển và bắt
-                            if getDistance(hrp.Position, rootPart.Position) > FIRE_DISTANCE then
-                                humanoid:MoveTo(rootPart.Position)
-                            else
-                                local prompt = rootPart:FindFirstChild("PromptAttachment")
-                                if prompt and prompt:FindFirstChild("ProximityPrompt") then
-                                    fireproximityprompt(prompt.ProximityPrompt)
-                                    done[v] = true
-                                    print("Đã bắt SECRET giá trị:", value)
-                                end
-                            end
-                        else
-                            sell(tuoi)
-                        end
-                else
-                    sell(tuoi)
+                local rarity = overhead and overhead:FindFirstChild("Rarity")
+
+                if price then
+                    local value = parse_price(price.Text)
+                    if value and value > highestOwnedPrice and currentCash >= value then
+                        found = true
+                        chase_and_catch(humanoid, rootPart)
+                        break
+                    end
                 end
             end
         end
-    else
-        local s,a = get_lowest_price_brain(tuoi)
-        if getDistance(hrp.Position, s.Claim.Hitbox.Position) > FIRE_DISTANCE then
-            humanoid:MoveTo(s.Claim.Hitbox.Position)
-        else
-            fireproximityprompt(s.Base.Spawn.PromptAttachment.ProximityPrompt)
+
+        if not found then
+           sell(tuoi)
         end
-        
+
+        task.wait(1)
+        else
+            local s, a = get_lowest_price_brain(tuoi)
+                if s and s.Claim and s.Claim:FindFirstChild("Hitbox") then
+                    humanoid:MoveTo(s.Claim.Hitbox.Position)
+                    task.wait(0.5)
+                    if s.Base and s.Base.Spawn and s.Base.Spawn:FindFirstChild("PromptAttachment") then
+                        local prompt = s.Base.Spawn.PromptAttachment:FindFirstChild("ProximityPrompt")
+                        if prompt then
+                            fireproximityprompt(prompt)
+                            print("💀 Đã thay con yếu:", a)
+                        end
+                    end
+                end
     end
 end
 
-
-auto_buy_or_farm()
+-- 🚀 Bắt đầu auto loop
+auto_buy_or_farm_loop()
