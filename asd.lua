@@ -139,6 +139,8 @@ function auto_buy_or_farm()
                         else
                             sell(tuoi)
                         end
+                else
+                    sell(tuoi)
                 end
             end
         end
