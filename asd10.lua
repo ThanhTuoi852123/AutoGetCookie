@@ -142,7 +142,6 @@ function auto_buy_or_farm()
         print(hcekh)
         if hcekh == false then
             local highestOwnedPrice = get_highest_price_brain(tuoi)
-            print(highestOwnedPrice)
             for _, v in pairs(workspace.MovingAnimals:GetChildren()) do
                 local rootPart = v:FindFirstChild("HumanoidRootPart")
                 if rootPart and rootPart:FindFirstChild("Info") then
@@ -150,11 +149,12 @@ function auto_buy_or_farm()
                     local price = overhead and overhead:FindFirstChild("Price")
                     local value = tonumber(parse_price(price.Text))
                     local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
-                    print(value)
-                    print(currentCash)
-                    if value > tonumber(highestOwnedPrice) and not done[v] then
+                    local nho, sdf = get_lowest_price_brain(tuoi)
+                    if (value > tonumber(highestOwnedPrice) or value > tonumber(sdf)) and not done[v] then
                             if currentCash >= value then
                                 found = true
+                                humanoid:MoveTo(tuoi.Spawn.Position)
+                                humanoid.MoveToFinished:Wait()
                                 while task.wait() do
                                     local rootPart = v:FindFirstChild("HumanoidRootPart")
                                     if rootPart then
