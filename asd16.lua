@@ -166,6 +166,7 @@ function auto_buy_or_farm()
                                             if prompt and prompt:FindFirstChild("ProximityPrompt") then
                                                 fireproximityprompt(prompt.ProximityPrompt)
                                                 done[v] = true
+                                                break
                                             end
                                         end
                                     else
@@ -222,5 +223,9 @@ function auto_buy_or_farm()
     end
 end
 
-
+local VirtualUser = game:service "VirtualUser"
+game:service("Players").LocalPlayer.Idled:connect(function()
+    VirtualUser:CaptureController()
+    VirtualUser:ClickButton2(Vector2.new())
+end)
 auto_buy_or_farm()
