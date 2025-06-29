@@ -233,7 +233,9 @@ game:service("Players").LocalPlayer.Idled:connect(function()
     VirtualUser:CaptureController()
     VirtualUser:ClickButton2(Vector2.new())
 end)
-
+local dp = game:GetService("RunService")
+dp:Set3dRenderingEnabled(false)
+settings().Rendering.QualityLevel = "Level01"
 spawn(function()
     while task.wait(10) do
             spin()
