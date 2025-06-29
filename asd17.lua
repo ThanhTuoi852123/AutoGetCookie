@@ -168,13 +168,13 @@ function auto_buy_or_farm()
                                             if prompt and prompt:FindFirstChild("ProximityPrompt") then
                                                 fireproximityprompt(prompt.ProximityPrompt)
                                                 done[v] = true
-                                                break
                                             end
                                         end
                                     else
                                         break
                                     end
                                 end
+                                break
                             end
                     else
                         if value > tonumber(sdf) and not done[v] then
@@ -197,6 +197,7 @@ function auto_buy_or_farm()
                                         break
                                     end
                                 end
+                                break
                             end
                         end
                     end
