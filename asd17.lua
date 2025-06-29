@@ -222,6 +222,9 @@ function auto_buy_or_farm()
             humanoid:MoveTo(tuoi.Spawn.Position)
             humanoid.MoveToFinished:Wait()
             sell(tuoi)
+        else
+            humanoid:MoveTo(tuoi.Spawn.Position)
+            humanoid.MoveToFinished:Wait()
         end
     end
 end
