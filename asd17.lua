@@ -90,8 +90,10 @@ function sell(tuoi)
     local player = game.Players.LocalPlayer
     local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
     for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
-        local hitbox = v:FindFirstChild("Claim") and v.Claim:FindFirstChild("Hitbox")
-        if hitbox and hitbox:FindFirstChildWhichIsA("TouchTransmitter") then
+        local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
+        local attachment = spawn and spawn:FindFirstChild("Attachment")
+        if attachment then
+            local hitbox = v:FindFirstChild("Claim") and v.Claim:FindFirstChild("Hitbox")
             humanoid:MoveTo(hitbox.Position)
             humanoid.MoveToFinished:Wait() 
         end
@@ -203,6 +205,7 @@ function auto_buy_or_farm()
         else
             humanoid:MoveTo(tuoi.Spawn.Position)
             humanoid.MoveToFinished:Wait()
+            sell()
             local s,a = get_lowest_price_brain(tuoi)
             for i = 1, 3 do
             if getDistance(hrp.Position, s.Claim.Hitbox.Position) > FIRE_DISTANCE then
