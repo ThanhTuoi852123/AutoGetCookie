@@ -227,10 +227,25 @@ game:service("Players").LocalPlayer.Idled:connect(function()
     VirtualUser:CaptureController()
     VirtualUser:ClickButton2(Vector2.new())
 end)
-auto_buy_or_farm()
+
 spawn(function()
-while task.wait(10) do
+    while task.wait(10) do
             spin()
-        end
-    end)
+    end
+end)
+spawn(function()
+    auto_buy_or_farm()
+end)
+spawn(function()
+    local VIM = game:GetService("VirtualInputManager")
+
+    while true do
+        VIM:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
+        wait(0.05)
+        VIM:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
+        wait(10) -- mỗi 5 giây
+    end
+end)
+
+
 
