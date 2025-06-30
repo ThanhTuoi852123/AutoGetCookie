@@ -154,7 +154,7 @@ function auto_buy_or_farm()
                     local value = tonumber(parse_price(price.Text))
                     local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
                     local nho, sdf = get_lowest_price_brain(tuoi)
-                    if value > tonumber(highestOwnedPrice) and not done[v] then
+                    if value >= tonumber(highestOwnedPrice) and not done[v] then
                             if currentCash >= value then
                                 found = true
                                     
@@ -177,7 +177,7 @@ function auto_buy_or_farm()
                                 break
                             end
                     else
-                        if value > tonumber(sdf) and not done[v] then
+                        if value >= tonumber(sdf) and not done[v] then
                             if currentCash >= value then
                                 found = true
                                     
