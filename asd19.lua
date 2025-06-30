@@ -297,7 +297,7 @@ layout.SortOrder = Enum.SortOrder.LayoutOrder
 layout.Parent = mainFrame
 
 -- Dòng tiêu đề và thời gian
-local title = createLabel("ThanhTuoi Dev", 40, Color3.fromRGB(0, 255, 255), true)
+local title = createLabel("ThanhTuoi Dev", 40, Color3.fromRGB(255, 255, 0), true)
 title.Parent = mainFrame
 
 local timeLabel = createLabel("Time: 0h0m0s", 24)
@@ -316,16 +316,6 @@ task.spawn(function()
     end
 end)
 
--- Hàm tìm plot của người chơi
-function getpot()
-    for _,v in pairs(workspace.Plots:GetChildren()) do
-        if string.find(v.PlotSign.SurfaceGui.Frame.TextLabel.Text, game.Players.LocalPlayer.Name) then
-            return v
-        end
-    end
-end
-
--- Hàm cập nhật info
 function getinfo(tuoi)
     local infoList = {}
     for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
@@ -345,25 +335,21 @@ function getinfo(tuoi)
     return infoList
 end
 
--- Lấy plot
 local tuoi = getpot()
 
--- Tạo bảng lưu label động
+
 local animalLabels = {}
 
--- Vòng lặp cập nhật mỗi giây
 task.spawn(function()
     while true do
-        -- Xóa các label cũ
         for _, lbl in pairs(animalLabels) do
             lbl:Destroy()
         end
         animalLabels = {}
 
-        -- Lấy danh sách mới
         local animals = getinfo(tuoi)
         for _, animal in pairs(animals) do
-            local line = string.format("Rarity: %s | Name: %s | Price: %s", animal.Rarity, animal.Name, animal.Price)
+            local line = string.format("Rarity: %s | Name: %s", animal.Rarity, animal.Name)
             local newLabel = createLabel(line, 22)
             newLabel.Parent = mainFrame
             table.insert(animalLabels, newLabel)
