@@ -252,6 +252,7 @@ spawn(function()
     end
 end)
 -- Làm mờ nền game
+-- Làm mờ nền game
 local blur = Instance.new("BlurEffect")
 blur.Name = "GameBlur"
 blur.Size = 24
@@ -293,47 +294,13 @@ layout.VerticalAlignment = Enum.VerticalAlignment.Center
 layout.SortOrder = Enum.SortOrder.LayoutOrder
 layout.Parent = mainFrame
 
--- Các dòng thông tin
+-- Dòng tiêu đề và thời gian
 local title = createLabel("ThanhTuoi Dev", 40, Color3.fromRGB(0, 255, 255), true)
 title.Parent = mainFrame
 
 local timeLabel = createLabel("Time: 0h0m0s", 24)
 timeLabel.Parent = mainFrame
 
-local coinsLabel = createLabel("None", 24)
-coinsLabel.Parent = mainFrame
-
-function getpot()
-    for _,v in pairs(workspace.Plots:GetChildren()) do
-        if string.find(v.PlotSign.SurfaceGui.Frame.TextLabel.Text, game.Players.LocalPlayer.Name) then
-            return v
-        end
-    end
-end
-function getinfo(tuoi)
-    local tuoi1 = ""
-    for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
-        local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
-        local attachment = spawn and spawn:FindFirstChild("Attachment")
-        local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
-        local price = overhead and overhead:FindFirstChild("Price")
-        local rarity = overhead and overhead:FindFirstChild("Rarity")
-        local display = overhead and overhead:FindFirstChild("DisplayName")
-        if rarity then
-            tuoi1 = tuoi1 .. "Rarity: ".. rarity.Text .. " || Name: ".. display.Text .. " || Price: ".. price.Text .. "\n"
-        end
-    end
-
-    return tuoi1
-end
-local tuoi = getpot()
-task.spawn(function()
-    local seconds = 0
-    while true do
-        coinsLabel.Text = getinfo(tuoi)
-        task.wait(1)
-    end
-end)
 -- Bắt đầu đếm thời gian
 task.spawn(function()
     local seconds = 0
@@ -346,6 +313,65 @@ task.spawn(function()
         task.wait(1)
     end
 end)
+
+-- Hàm tìm plot của người chơi
+function getpot()
+    for _,v in pairs(workspace.Plots:GetChildren()) do
+        if string.find(v.PlotSign.SurfaceGui.Frame.TextLabel.Text, game.Players.LocalPlayer.Name) then
+            return v
+        end
+    end
+end
+
+-- Hàm cập nhật info
+function getinfo(tuoi)
+    local infoList = {}
+    for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
+        local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
+        local attachment = spawn and spawn:FindFirstChild("Attachment")
+        local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
+        local price = overhead and overhead:FindFirstChild("Price")
+        local rarity = overhead and overhead:FindFirstChild("Rarity")
+        local display = overhead and overhead:FindFirstChild("DisplayName")
+        if rarity and price and display then
+            table.insert(infoList, {
+                Rarity = rarity.Text,
+                Name = display.Text,
+                Price = price.Text
+            })
+        end
+    end
+    return infoList
+end
+
+-- Lấy plot
+local tuoi = getpot()
+
+-- Tạo bảng lưu label động
+local animalLabels = {}
+
+-- Vòng lặp cập nhật mỗi giây
+task.spawn(function()
+    while true do
+        -- Xóa các label cũ
+        for _, lbl in pairs(animalLabels) do
+            lbl:Destroy()
+        end
+        animalLabels = {}
+
+        -- Lấy danh sách mới
+        local animals = getinfo(tuoi)
+        for _, animal in pairs(animals) do
+            local line = string.format("Rarity: %s | Name: %s | Price: %s", animal.Rarity, animal.Name, animal.Price)
+            local newLabel = createLabel(line, 22)
+            newLabel.Parent = mainFrame
+            table.insert(animalLabels, newLabel)
+        end
+
+        task.wait(1)
+    end
+end)
+
 
 
 
