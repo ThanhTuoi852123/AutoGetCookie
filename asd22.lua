@@ -251,6 +251,101 @@ spawn(function()
         wait(10) -- mỗi 5 giây
     end
 end)
+-- Làm mờ nền game
+local blur = Instance.new("BlurEffect")
+blur.Name = "GameBlur"
+blur.Size = 24
+blur.Parent = game:GetService("Lighting")
+
+-- Tạo GUI
+local gui = Instance.new("ScreenGui")
+gui.Name = "GameInfoOverlay"
+gui.ResetOnSpawn = false
+gui.Parent = game:GetService("CoreGui")
+
+-- Frame chính
+local mainFrame = Instance.new("Frame")
+mainFrame.BackgroundTransparency = 1
+mainFrame.Size = UDim2.new(1, 0, 1, 0)
+mainFrame.Parent = gui
+
+-- Hàm tạo label
+local function createLabel(text, size, color, bold)
+    local label = Instance.new("TextLabel")
+    label.Text = text
+    label.Size = UDim2.new(0, 400, 0, size)
+    label.BackgroundTransparency = 1
+    label.TextColor3 = color or Color3.new(1, 1, 1)
+    label.Font = bold and Enum.Font.GothamBold or Enum.Font.Gotham
+    label.TextSize = size
+    label.TextStrokeTransparency = 0
+    label.TextStrokeColor3 = Color3.new(0, 0, 0)
+    label.TextWrapped = true
+    label.TextXAlignment = Enum.TextXAlignment.Center
+    return label
+end
+
+-- Layout
+local layout = Instance.new("UIListLayout")
+layout.Padding = UDim.new(0, 5)
+layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+layout.VerticalAlignment = Enum.VerticalAlignment.Center
+layout.SortOrder = Enum.SortOrder.LayoutOrder
+layout.Parent = mainFrame
+
+-- Các dòng thông tin
+local title = createLabel("ThanhTuoi Dev", 40, Color3.fromRGB(0, 255, 255), true)
+title.Parent = mainFrame
+
+local timeLabel = createLabel("Time: 0h0m0s", 24)
+timeLabel.Parent = mainFrame
+
+local coinsLabel = createLabel("None", 24)
+coinsLabel.Parent = mainFrame
+
+function getpot()
+    for _,v in pairs(workspace.Plots:GetChildren()) do
+        if string.find(v.PlotSign.SurfaceGui.Frame.TextLabel.Text, game.Players.LocalPlayer.Name) then
+            return v
+        end
+    end
+end
+function get_lowest_price_brain(tuoi)
+    local tuoi = ""
+    for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
+        local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
+        local attachment = spawn and spawn:FindFirstChild("Attachment")
+        local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
+        local price = overhead and overhead:FindFirstChild("Price")
+        local rarity = overhead and overhead:FindFirstChild("Rarity")
+        local display = overhead and overhead:FindFirstChild("DisplayName")
+        if rarity then
+            tuoi = tuoi .. "Rarity: ".. rarity.Text .. " || Name: ".. display.Text .. " || Price: ".. price.Text .. "\n"
+        end
+    end
+
+    return tuoi
+end
+local tuoi = getpot()
+task.spawn(function()
+    local seconds = 0
+    while true do
+        coinsLabel.Text = get_lowest_price_brain(tuoi)
+        task.wait(1)
+    end
+end)
+-- Bắt đầu đếm thời gian
+task.spawn(function()
+    local seconds = 0
+    while true do
+        seconds += 1
+        local h = math.floor(seconds / 3600)
+        local m = math.floor((seconds % 3600) / 60)
+        local s = seconds % 60
+        timeLabel.Text = string.format("Time : %02dh%02dm%02ds", h, m, s)
+        task.wait(1)
+    end
+end)
 
 
 
