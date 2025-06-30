@@ -233,8 +233,8 @@ game:service("Players").LocalPlayer.Idled:connect(function()
     VirtualUser:CaptureController()
     VirtualUser:ClickButton2(Vector2.new())
 end)
-local dp = game:GetService("RunService")
-dp:Set3dRenderingEnabled(false)
+-- local dp = game:GetService("RunService")
+-- dp:Set3dRenderingEnabled(false)
 settings().Rendering.QualityLevel = "Level01"
 spawn(function()
     while task.wait(10) do
@@ -255,5 +255,121 @@ spawn(function()
     end
 end)
 
+local blur = Instance.new("BlurEffect")
+blur.Name = "GameBlur"
+blur.Size = 24
+blur.Parent = game:GetService("Lighting")
 
+-- Tạo GUI
+local gui = Instance.new("ScreenGui")
+gui.Name = "GameInfoOverlay"
+gui.ResetOnSpawn = false
+gui.Parent = game:GetService("CoreGui")
+
+-- Frame chính
+local mainFrame = Instance.new("Frame")
+mainFrame.BackgroundTransparency = 1
+mainFrame.Size = UDim2.new(1, 0, 1, 0)
+mainFrame.Parent = gui
+
+-- Hàm tạo label
+local function createLabel(text, size, color, bold)
+    local label = Instance.new("TextLabel")
+    label.Text = text
+    label.Size = UDim2.new(0, 400, 0, size)
+    label.BackgroundTransparency = 1
+    label.TextColor3 = color or Color3.new(1, 1, 1)
+    label.Font = bold and Enum.Font.GothamBold or Enum.Font.Gotham
+    label.TextSize = size
+    label.TextStrokeTransparency = 0
+    label.TextStrokeColor3 = Color3.new(0, 0, 0)
+    label.TextWrapped = true
+    label.TextXAlignment = Enum.TextXAlignment.Center
+    return label
+end
+
+-- Layout
+local layout = Instance.new("UIListLayout")
+layout.Padding = UDim.new(0, 5)
+layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+layout.VerticalAlignment = Enum.VerticalAlignment.Center
+layout.SortOrder = Enum.SortOrder.LayoutOrder
+layout.Parent = mainFrame
+
+-- Dòng tiêu đề và thời gian
+local title = createLabel("ThanhTuoi Dev", 40, Color3.fromRGB(0, 255, 255), true)
+title.Parent = mainFrame
+
+local timeLabel = createLabel("Time: 0h0m0s", 24)
+timeLabel.Parent = mainFrame
+
+-- Bắt đầu đếm thời gian
+task.spawn(function()
+    local seconds = 0
+    while true do
+        seconds += 1
+        local h = math.floor(seconds / 3600)
+        local m = math.floor((seconds % 3600) / 60)
+        local s = seconds % 60
+        timeLabel.Text = string.format("Time : %02dh%02dm%02ds", h, m, s)
+        task.wait(1)
+    end
+end)
+
+-- Hàm tìm plot của người chơi
+function getpot()
+    for _,v in pairs(workspace.Plots:GetChildren()) do
+        if string.find(v.PlotSign.SurfaceGui.Frame.TextLabel.Text, game.Players.LocalPlayer.Name) then
+            return v
+        end
+    end
+end
+
+-- Hàm cập nhật info
+function getinfo(tuoi)
+    local infoList = {}
+    for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
+        local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
+        local attachment = spawn and spawn:FindFirstChild("Attachment")
+        local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
+        local price = overhead and overhead:FindFirstChild("Price")
+        local rarity = overhead and overhead:FindFirstChild("Rarity")
+        local display = overhead and overhead:FindFirstChild("DisplayName")
+        if rarity and price and display then
+            table.insert(infoList, {
+                Rarity = rarity.Text,
+                Name = display.Text
+            })
+        end
+    end
+    return infoList
+end
+
+-- Lấy plot
+local tuoi = getpot()
+
+-- Tạo bảng lưu label động
+local animalLabels = {}
+
+-- Vòng lặp cập nhật mỗi giây
+task.spawn(function()
+    while true do
+        -- Xóa các label cũ
+        for _, lbl in pairs(animalLabels) do
+            lbl:Destroy()
+        end
+        animalLabels = {}
+
+        -- Lấy danh sách mới
+        local animals = getinfo(tuoi)
+        for _, animal in pairs(animals) do
+            local line = string.format("Rarity: %s | Name: %s | Price: %s", animal.Rarity, animal.Name, animal.Price)
+            local newLabel = createLabel(line, 22)
+            newLabel.Parent = mainFrame
+            table.insert(animalLabels, newLabel)
+        end
+
+        task.wait(1)
+    end
+end)
 
