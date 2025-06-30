@@ -311,7 +311,7 @@ function getpot()
     end
 end
 function getinfo(tuoi)
-    local tuoi = ""
+    local tuoi1 = ""
     for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
         local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
         local attachment = spawn and spawn:FindFirstChild("Attachment")
@@ -320,11 +320,11 @@ function getinfo(tuoi)
         local rarity = overhead and overhead:FindFirstChild("Rarity")
         local display = overhead and overhead:FindFirstChild("DisplayName")
         if rarity then
-            tuoi = tuoi .. "Rarity: ".. rarity.Text .. " || Name: ".. display.Text .. " || Price: ".. price.Text .. "\n"
+            tuoi1 = tuoi1 .. "Rarity: ".. rarity.Text .. " || Name: ".. display.Text .. " || Price: ".. price.Text .. "\n"
         end
     end
 
-    return tuoi
+    return tuoi1
 end
 local tuoi = getpot()
 task.spawn(function()
