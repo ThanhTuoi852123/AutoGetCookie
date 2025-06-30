@@ -310,7 +310,7 @@ function getpot()
         end
     end
 end
-function get_lowest_price_brain(tuoi)
+function getinfo(tuoi)
     local tuoi = ""
     for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
         local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
@@ -330,7 +330,7 @@ local tuoi = getpot()
 task.spawn(function()
     local seconds = 0
     while true do
-        coinsLabel.Text = get_lowest_price_brain(tuoi)
+        coinsLabel.Text = getinfo(tuoi)
         task.wait(1)
     end
 end)
