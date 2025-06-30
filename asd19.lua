@@ -3,7 +3,7 @@ if not game:IsLoaded() then
 end
 function getpot()
     for _,v in pairs(workspace.Plots:GetChildren()) do
-        if string.find(v.PlotSign.SurfaceGui.Frame.TextLabel.Text, game.Players.LocalPlayer.Name) then
+        if string.find(v.PlotSign.SurfaceGui.Frame.TextLabel.Text, game.Players.LocalPlayer.DisplayName) then
             return v
         end
     end
