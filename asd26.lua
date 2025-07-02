@@ -5,7 +5,7 @@ function getpot()
         end
     end
 end
-function send_webhook(url,name,price,rarity,img)
+function send_webhook(url,name,price,rarity)
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
 
@@ -13,7 +13,7 @@ local player = game.Players.LocalPlayer
 local petName = name
 local petPrice = price
 local petRarity = rarity
-local petImageURL = img -- ← Thay ảnh thật ở đây
+local petImageURL = "https://cdn.discordapp.com/icons/1042030762792337408/746e4d8216d9991cd66afa106cd14d02.png?size=80&quality=lossless" -- ← Thay ảnh thật ở đây
 
 -- Webhook URL
 local webhookURL = url
@@ -216,6 +216,8 @@ function auto_buy_or_farm()
                 if rootPart and rootPart:FindFirstChild("Info") then
                     local overhead = rootPart.Info:FindFirstChild("AnimalOverhead")
                     local price = overhead and overhead:FindFirstChild("Price")
+                    local rarity = overhead and overhead:FindFirstChild("Rarity")
+                    local display = overhead and overhead:FindFirstChild("DisplayName")
                     local value = tonumber(parse_price(price.Text))
                     local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
                     local nho, sdf = get_lowest_price_brain(tuoi)
@@ -232,6 +234,9 @@ function auto_buy_or_farm()
                                             local prompt = rootPart:FindFirstChild("PromptAttachment")
                                             if prompt and prompt:FindFirstChild("ProximityPrompt") then
                                                 fireproximityprompt(prompt.ProximityPrompt)
+                                                if rarity.Text:lower() == "secret" then
+                                                    send_webhook("https://discord.com/api/webhooks/1389893505479872552/T08IbplDtdsAnkDhqzpdHujCSU0qA8kyVkQ4C-RJzGiAYB3gIAcDCiWeQVHCR5dyqSto",display.Text,price.Text,rarity.Text)
+                                                end
                                                 done[v] = true
                                             end
                                         end
@@ -243,6 +248,7 @@ function auto_buy_or_farm()
                             end
                     else
                         if value >= tonumber(sdf) and not done[v] then
+                            
                             if currentCash >= value then
                                 found = true
                                     
@@ -255,6 +261,9 @@ function auto_buy_or_farm()
                                             local prompt = rootPart:FindFirstChild("PromptAttachment")
                                             if prompt and prompt:FindFirstChild("ProximityPrompt") then
                                                 fireproximityprompt(prompt.ProximityPrompt)
+                                                if rarity.Text:lower() == "secret" then
+                                                    send_webhook("https://discord.com/api/webhooks/1389893505479872552/T08IbplDtdsAnkDhqzpdHujCSU0qA8kyVkQ4C-RJzGiAYB3gIAcDCiWeQVHCR5dyqSto",display.Text,price.Text,rarity.Text)
+                                                end
                                                 done[v] = true
                                             end
                                         end
