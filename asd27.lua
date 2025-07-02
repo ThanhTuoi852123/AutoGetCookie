@@ -234,9 +234,9 @@ function auto_buy_or_farm()
                                             local prompt = rootPart:FindFirstChild("PromptAttachment")
                                             if prompt and prompt:FindFirstChild("ProximityPrompt") then
                                                 fireproximityprompt(prompt.ProximityPrompt)
-                                                if rarity.Text:lower() == "secret" then
+                                                --if rarity.Text:lower() == "secret" then
                                                     send_webhook("https://discord.com/api/webhooks/1389893505479872552/T08IbplDtdsAnkDhqzpdHujCSU0qA8kyVkQ4C-RJzGiAYB3gIAcDCiWeQVHCR5dyqSto",display.Text,price.Text,rarity.Text)
-                                                end
+                                                --end
                                                 done[v] = true
                                             end
                                         end
@@ -261,9 +261,9 @@ function auto_buy_or_farm()
                                             local prompt = rootPart:FindFirstChild("PromptAttachment")
                                             if prompt and prompt:FindFirstChild("ProximityPrompt") then
                                                 fireproximityprompt(prompt.ProximityPrompt)
-                                                if rarity.Text:lower() == "secret" then
+                                                --if rarity.Text:lower() == "secret" then
                                                     send_webhook("https://discord.com/api/webhooks/1389893505479872552/T08IbplDtdsAnkDhqzpdHujCSU0qA8kyVkQ4C-RJzGiAYB3gIAcDCiWeQVHCR5dyqSto",display.Text,price.Text,rarity.Text)
-                                                end
+                                                --end
                                                 done[v] = true
                                             end
                                         end
