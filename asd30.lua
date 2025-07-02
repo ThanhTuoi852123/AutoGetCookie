@@ -388,14 +388,7 @@ task.spawn(function()
     end
 end)
 
--- Hàm tìm plot của người chơi
-function getpot()
-    for _,v in pairs(workspace.Plots:GetChildren()) do
-        if string.find(v.PlotSign.SurfaceGui.Frame.TextLabel.Text, game.Players.LocalPlayer.Name) then
-            return v
-        end
-    end
-end
+-- Hàm tìm plot của người chơ
 
 -- Hàm cập nhật info
 function getinfo(tuoi)
