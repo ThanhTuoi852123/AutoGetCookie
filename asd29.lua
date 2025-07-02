@@ -420,7 +420,7 @@ end
 
 -- Lấy plot
 local tuoi = getpot()
-
+print(tuoi)
 -- Tạo bảng lưu label động
 local animalLabels = {}
 
