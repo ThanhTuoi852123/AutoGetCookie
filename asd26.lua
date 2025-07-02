@@ -5,6 +5,71 @@ function getpot()
         end
     end
 end
+function send_webhook(url,name,price,rarity,img)
+local HttpService = game:GetService("HttpService")
+local player = game.Players.LocalPlayer
+
+-- Thông tin pet cần gửi
+local petName = name
+local petPrice = price
+local petRarity = rarity
+local petImageURL = img -- ← Thay ảnh thật ở đây
+
+-- Webhook URL
+local webhookURL = url
+
+-- Dữ liệu gửi đi
+local data = {
+    ["username"] = player.Name, -- Tên hiển thị là tên người chơi
+    ["embeds"] = {
+        {
+            ["title"] = "🐾 Brainrot 🐾",
+            ["color"] = 16753920, -- Vàng cam (có thể đổi mã màu)
+            ["fields"] = {
+                {
+                    ["name"] = "[🐶 Pet Name]",
+                    ["value"] = petName,
+                    ["inline"] = true
+                },
+                {
+                    ["name"] = "[💰 Price]",
+                    ["value"] = petPrice,
+                    ["inline"] = true
+                },
+                {
+                    ["name"] = "[🎖️ Rarity]",
+                    ["value"] = petRarity,
+                    ["inline"] = true
+                }
+            },
+            ["thumbnail"] = {
+                ["url"] = petImageURL
+            },
+            ["footer"] = {
+                ["text"] = "Sent from ThanhTuoi Dev"
+            },
+            ["timestamp"] = DateTime.now():ToIsoDate()
+        }
+    }
+}
+
+-- Headers
+local headers = {
+    ["Content-Type"] = "application/json"
+}
+
+-- Encode JSON
+local body = HttpService:JSONEncode(data)
+
+-- Gửi webhook
+local http_request = http_request or request or (syn and syn.request) or (http and http.request)
+http_request({
+    Url = webhookURL,
+    Method = "POST",
+    Headers = headers,
+    Body = body
+})
+end
 function spin()
     game:GetService("ReplicatedStorage"):FindFirstChild("Packages"):FindFirstChild("Net"):FindFirstChild("RE/RainbowSpinWheelService/Spin"):FireServer()
 end
