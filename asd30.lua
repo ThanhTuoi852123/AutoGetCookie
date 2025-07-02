@@ -8,7 +8,15 @@ end
 function send_webhook(url,name,price,rarity)
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
-
+if string.find(url:lower(), "saturnita") then
+    url = "https://cdn.discordapp.com/attachments/1389893484563009599/1389966625910030407/image.png?ex=68668acb&is=6865394b&hm=8719ed00b470f92f242a363745a84419a7a3883c3e086db17f9db0e7bd2d3cfa&"
+elseif string.find(url:lower(), "tralale") then
+    url = "https://cdn.discordapp.com/attachments/1389893484563009599/1389966683120337036/image.png?ex=68668ad9&is=68653959&hm=7d042796aa1f230011ba92b2dc351c0e53a87e1f623b38788fd9d1a33ef1069c&"
+elseif string.find(url:lower(), "medussi") then
+    url = "https://cdn.discordapp.com/attachments/1389893484563009599/1389966768356855849/image.png?ex=68668aed&is=6865396d&hm=35f2d372a9c676550e2d935d3ae50d85f1c2fd06f724ba930ccb7bcd374ca1b3&"
+elseif string.find(url:lower(), "combina") then
+    url = "https://cdn.discordapp.com/attachments/1389893484563009599/1389966711951851540/image.png?ex=68668ae0&is=68653960&hm=291e2153c125ec208e5a9d39d6ecb008180fb575acf07e470f802040f46e7b7c&"
+end
 -- Thông tin pet cần gửi
 local petName = name
 local petPrice = price
