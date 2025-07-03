@@ -71,8 +71,6 @@ local function GetConfigValue(Key: string)
 end
 
 --// Set rendering enabled
-local Rendering = GetConfigValue("Rendering Enabled")
-RunService:Set3dRenderingEnabled(Rendering)
 
 --// Check if the script is already running
 if _G.StockBot then return end 
@@ -148,7 +146,7 @@ local function MakeStockString(Stock: table): string
 		Name = EggName or Name
 		String ..= `{Name} **x{Amount}**\n`
 	end
-
+	
 	return String
 end
 
@@ -168,7 +166,7 @@ local function ProcessPacket(Data, Type: string, Layout)
 			value = StockString,
 			inline = true
 		}
-
+		print(Field)
 		table.insert(Fields, Field)
 	end
 
