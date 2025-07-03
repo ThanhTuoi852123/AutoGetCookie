@@ -27,7 +27,7 @@ local petPrice = price
 local petRarity = rarity
 
 -- Webhook URL
-local webhookURL = "https://discord.com/api/webhooks/1389893505479872552/T08IbplDtdsAnkDhqzpdHujCSU0qA8kyVkQ4C-RJzGiAYB3gIAcDCiWeQVHCR5dyqSto"
+local webhookURL = "https://discord.com/api/webhooks/1389893507812036648/BGNvOWsSuUxM6AyKEEo8H_JDZ7CPrbio8DJ9rxHyEdHZ06bLc9b5088XXXu6k02jBIFB"
 
 -- Dữ liệu gửi đi
 local data = {
