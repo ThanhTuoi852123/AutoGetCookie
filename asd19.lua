@@ -250,6 +250,7 @@ function auto_buy_or_farm()
                                                 if rarity.Text:lower() == "secret" then
                                                     send_webhook(displayname.Text,price.Text,rarity.Text)
                                                 end
+                                                break
                                             end
                                         end
                                     else
@@ -276,6 +277,7 @@ function auto_buy_or_farm()
                                                 if rarity.Text:lower() == "secret" then
                                                     send_webhook(displayname.Text,price.Text,rarity.Text)
                                                 end
+                                                break
                                             end
                                         end
                                     else
