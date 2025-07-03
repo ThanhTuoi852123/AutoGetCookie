@@ -38,17 +38,17 @@ local data = {
             ["color"] = 16753920, -- Vàng cam (có thể đổi mã màu)
             ["fields"] = {
                 {
-                    ["name"] = "[🐶 Pet Name]",
+                    ["name"] = "[🐶]",
                     ["value"] = petName,
                     ["inline"] = true
                 },
                 {
-                    ["name"] = "[💰 Price]",
+                    ["name"] = "[💰]",
                     ["value"] = petPrice,
                     ["inline"] = true
                 },
                 {
-                    ["name"] = "[🎖️ Rarity]",
+                    ["name"] = "[🎖️]",
                     ["value"] = petRarity,
                     ["inline"] = true
                 }
