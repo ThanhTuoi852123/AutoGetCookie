@@ -322,14 +322,17 @@ game:service("Players").LocalPlayer.Idled:connect(function()
 end)
 -- local dp = game:GetService("RunService")
 -- dp:Set3dRenderingEnabled(false)
-local Terrain = workspace:FindFirstChildOfClass('Terrain')
+
+spawn(function()
+		pcall(function()	
+    local Terrain = workspace:FindFirstChildOfClass('Terrain')
 	Terrain.WaterWaveSize = 0
 	Terrain.WaterWaveSpeed = 0
 	Terrain.WaterReflectance = 0
 	Terrain.WaterTransparency = 1
-	Lighting.GlobalShadows = false
-	Lighting.FogEnd = 9e9
-	Lighting.FogStart = 9e9
+	game.Lighting.GlobalShadows = false
+	game.Lighting.FogEnd = 9e9
+	game.Lighting.FogStart = 9e9
 	settings().Rendering.QualityLevel = 1
 	for i,v in pairs(game:GetDescendants()) do
 		if v:IsA("BasePart") then
@@ -360,6 +363,8 @@ local Terrain = workspace:FindFirstChildOfClass('Terrain')
 			end
 		end)
 	end)
+			end)
+end)
 spawn(function()
     while task.wait(10) do
             spin()
