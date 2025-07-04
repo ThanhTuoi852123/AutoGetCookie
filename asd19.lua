@@ -322,18 +322,16 @@ game:service("Players").LocalPlayer.Idled:connect(function()
 end)
 -- local dp = game:GetService("RunService")
 -- dp:Set3dRenderingEnabled(false)
-
+local debris = game:GetService("Debris")
+local lighting = game:GetService("Lighting")
 spawn(function()
 		pcall(function()	
-    local Terrain = workspace:FindFirstChildOfClass('Terrain')
-	Terrain.WaterWaveSize = 0
-	Terrain.WaterWaveSpeed = 0
-	Terrain.WaterReflectance = 0
-	Terrain.WaterTransparency = 1
-	game.Lighting.GlobalShadows = false
-	game.Lighting.FogEnd = 9e9
-	game.Lighting.FogStart = 9e9
-	settings().Rendering.QualityLevel = 1
+	game:GetService("GarbageCollectorService"):RequestGarbageCollection()
+	settings().Physics.PhysicsEnvironmentalThrottle = Enum.EnviromentalPhysicsThrottle.Default
+    settings().Physics.AllowSleep = true -- Allow parts to 'sleep' when stationary
+    settings().Rendering.QualityLevel = 1
+    lighting.GlobalShadows = false
+    lighting.ClockTime = 12 -- Set to a fixed time (no dynamic lighting)
 	for i,v in pairs(game:GetDescendants()) do
 		if v:IsA("BasePart") then
 			v.Material = "Plastic"
@@ -350,11 +348,15 @@ spawn(function()
 			v.Lifetime = NumberRange.new(0)
 		end
 	end
-	for i,v in pairs(Lighting:GetDescendants()) do
+	for i,v in pairs(lighting:GetDescendants()) do
 		if v:IsA("PostEffect") then
 			v.Enabled = false
 		end
 	end
+	local runService = game:GetService("RunService")
+	runService.Stepped:Connect(function()
+        settings().Physics.PhysicsSimulationRate = physicsThrottle
+	    end)
 	workspace.DescendantAdded:Connect(function(child)
 		task.spawn(function()
 			if child:IsA('ForceField') or child:IsA('Sparkles') or child:IsA('Smoke') or child:IsA('Fire') or child:IsA('Beam') then
