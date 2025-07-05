@@ -326,9 +326,6 @@ local debris = game:GetService("Debris")
 local lighting = game:GetService("Lighting")
 spawn(function()
 		pcall(function()	
-	game:GetService("GarbageCollectorService"):RequestGarbageCollection()
-	settings().Physics.PhysicsEnvironmentalThrottle = Enum.EnviromentalPhysicsThrottle.Default
-    settings().Physics.AllowSleep = true -- Allow parts to 'sleep' when stationary
     settings().Rendering.QualityLevel = 1
     lighting.GlobalShadows = false
     lighting.ClockTime = 12 -- Set to a fixed time (no dynamic lighting)
@@ -353,18 +350,7 @@ spawn(function()
 			v.Enabled = false
 		end
 	end
-	local runService = game:GetService("RunService")
-	runService.Stepped:Connect(function()
-        settings().Physics.PhysicsSimulationRate = physicsThrottle
-	    end)
-	workspace.DescendantAdded:Connect(function(child)
-		task.spawn(function()
-			if child:IsA('ForceField') or child:IsA('Sparkles') or child:IsA('Smoke') or child:IsA('Fire') or child:IsA('Beam') then
-				RunService.Heartbeat:Wait()
-				child:Destroy()
-			end
-		end)
-	end)
+	
 			end)
 end)
 spawn(function()
