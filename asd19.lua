@@ -276,15 +276,15 @@ function auto_buy_or_farm()
                                                 done[v] = true
                                                 if rarity.Text:lower() == "secret" then
                                                     send_webhook(displayname.Text,price.Text,rarity.Text)
+						     break
                                                 end
-                                                break
+                                                
                                             end
                                         end
                                     else
                                         break
                                     end
                                 end
-                                break
                             end
                         end
                     end
