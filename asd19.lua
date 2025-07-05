@@ -234,7 +234,7 @@ function auto_buy_or_farm()
                     local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
                     local nho, sdf = get_lowest_price_brain(tuoi)
                     if value > tonumber(highestOwnedPrice) and not done[v] then
-                            if currentCash >= value then
+                            if currentCash > value then
                                 found = true
                                     
                                 while task.wait() do
@@ -257,11 +257,10 @@ function auto_buy_or_farm()
                                         break
                                     end
                                 end
-                                break
                             end
                     else
                         if value > tonumber(sdf) and not done[v] then
-                            if currentCash >= value then
+                            if currentCash > value then
                                 found = true
                                     
                                 while task.wait() do
