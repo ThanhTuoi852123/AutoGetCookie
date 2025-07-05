@@ -419,7 +419,7 @@ title.Parent = mainFrame
 
 local timeLabel = createLabel("Time: 0h0m0s", 24)
 timeLabel.Parent = mainFrame
-setfpscap(5)
+setfpscap(60)
 -- Bắt đầu đếm thời gian
 task.spawn(function()
     local seconds = 0
