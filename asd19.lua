@@ -8,6 +8,7 @@ function getpot()
         end
     end
 end
+
 function send_webhook(name,price,rarity)
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
@@ -95,8 +96,12 @@ function check_brain(tuoi)
     return true
 end
 function parse_price(text)
-    local numberPart = text:match("[0-9%.]+") -- bắt số & dấu chấm đầu tiên
-    local suffix = text:match("[KMB]") -- kiểm tra có hậu tố K/M/B không
+    -- Bắt phần đầu chứa số và hậu tố K/M/B, bỏ phần / hoặc các ký tự sau
+    local numberPartWithSuffix = text:match("([0-9%.]+[KMB]?)")
+    if not numberPartWithSuffix then return nil end
+
+    local numberPart = numberPartWithSuffix:match("[0-9%.]+")
+    local suffix = numberPartWithSuffix:match("[KMB]")
 
     local multiplier = 1
     if suffix == "K" then
@@ -122,7 +127,7 @@ function get_lowest_price_brain(tuoi)
         local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
         local attachment = spawn and spawn:FindFirstChild("Attachment")
         local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
-        local price = overhead and overhead:FindFirstChild("Price")
+        local price = overhead and overhead:FindFirstChild("Generation")
         local rarity = overhead and overhead:FindFirstChild("Rarity")
 
         if price and price.Text then
@@ -149,11 +154,11 @@ function get_highest_price_brain(tuoi)
         local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
         local attachment = spawn and spawn:FindFirstChild("Attachment")
         local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
-        local price = overhead and overhead:FindFirstChild("Price")
+        local price = overhead and overhead:FindFirstChild("Generation")
 
         if price and price.Text then
             local value = parse_price(price.Text)
-            if value and value > highestPrice then
+            if tonumber(value) and tonumber(value) > highestPrice then
                 highestPrice = value
             end
         end
@@ -208,6 +213,7 @@ function auto_buy_or_farm()
     local FIRE_DISTANCE = 7
     
     local tuoi = getpot()
+    tuoi.Purchases.PlotBlock.Hitbox:Destroy()
     local function getDistance(pos1, pos2)
             return (pos1 - pos2).Magnitude
     end
@@ -222,18 +228,21 @@ function auto_buy_or_farm()
         print(hcekh)
         if hcekh == false then
             local highestOwnedPrice = get_highest_price_brain(tuoi)
+	    print(highestOwnedPrice)
             for _, v in pairs(workspace.MovingAnimals:GetChildren()) do
                 local rootPart = v:FindFirstChild("HumanoidRootPart")
                 if rootPart and rootPart:FindFirstChild("Info") then
                     local overhead = rootPart.Info:FindFirstChild("AnimalOverhead")
                     local price = overhead and overhead:FindFirstChild("Price")
                     local rarity = overhead and overhead:FindFirstChild("Rarity")
+		    local genation = overhead and overhead:FindFirstChild("Generation")
                     local displayname = overhead and overhead:FindFirstChild("DisplayName")
                     local value = tonumber(parse_price(price.Text))
-                    
+                    local valuegen = tonumber(parse_price(genation.Text))
                     local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
                     local nho, sdf = get_lowest_price_brain(tuoi)
-                    if value >= tonumber(highestOwnedPrice) and not done[v] then
+		    print(sdf)
+                    if valuegen >= tonumber(highestOwnedPrice) and not done[v] then
                             if currentCash > value then
                                 found = true
                                     
@@ -260,7 +269,7 @@ function auto_buy_or_farm()
                                 end
                             end
                     else
-                        if value > tonumber(sdf) and not done[v] then
+                        if valuegen > tonumber(sdf) and not done[v] then
                             if currentCash > value then
                                 found = true
                                     
