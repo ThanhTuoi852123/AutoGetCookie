@@ -95,8 +95,12 @@ function check_brain(tuoi)
     return true
 end
 function parse_price(text)
-    local numberPart = text:match("[0-9%.]+") -- bắt số & dấu chấm đầu tiên
-    local suffix = text:match("[KMB]") -- kiểm tra có hậu tố K/M/B không
+    -- Bắt phần đầu chứa số và hậu tố K/M/B, bỏ phần / hoặc các ký tự sau
+    local numberPartWithSuffix = text:match("([0-9%.]+[KMB]?)")
+    if not numberPartWithSuffix then return nil end
+
+    local numberPart = numberPartWithSuffix:match("[0-9%.]+")
+    local suffix = numberPartWithSuffix:match("[KMB]")
 
     local multiplier = 1
     if suffix == "K" then
