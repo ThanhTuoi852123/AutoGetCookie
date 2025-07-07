@@ -8,6 +8,7 @@ function getpot()
         end
     end
 end
+
 function send_webhook(name,price,rarity)
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
@@ -212,6 +213,7 @@ function auto_buy_or_farm()
     local FIRE_DISTANCE = 7
     
     local tuoi = getpot()
+    tuoi.Purchases.PlotBlock.Hitbox:Destroy()
     local function getDistance(pos1, pos2)
             return (pos1 - pos2).Magnitude
     end
