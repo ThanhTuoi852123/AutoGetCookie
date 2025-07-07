@@ -125,7 +125,7 @@ function get_lowest_price_brain(tuoi)
         local price = overhead and overhead:FindFirstChild("Price")
         local rarity = overhead and overhead:FindFirstChild("Rarity")
 
-        if price and price.Text and rarity.Text:lower() ~= "secret" then
+        if price and price.Text then
             local value = parse_price(price.Text)
 
             if value and value < lowestPrice then
@@ -233,7 +233,7 @@ function auto_buy_or_farm()
                     
                     local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
                     local nho, sdf = get_lowest_price_brain(tuoi)
-                    if value > tonumber(highestOwnedPrice) and not done[v] then
+                    if value >= tonumber(highestOwnedPrice) and not done[v] then
                             if currentCash > value then
                                 found = true
                                     
