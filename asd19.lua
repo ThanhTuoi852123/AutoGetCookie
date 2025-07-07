@@ -119,25 +119,47 @@ function parse_price(text)
 
     return nil
 end
+function AllAreSecret(tuoi)
+    for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
+        local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
+        local attachment = spawn and spawn:FindFirstChild("Attachment")
+        local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
+        local rarity = overhead and overhead:FindFirstChild("Rarity")
+
+        if not (rarity and rarity.Text:lower() == "secret") then
+            return false
+        end
+    end
+    return true
+end
+
 function get_lowest_price_brain(tuoi)
     local lowestPrice = math.huge
     local weakestBrain = nil
-
+    local secretcheck = AllAreSecret(tuoi)
     for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
         local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
         local attachment = spawn and spawn:FindFirstChild("Attachment")
         local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
         local price = overhead and overhead:FindFirstChild("Generation")
         local rarity = overhead and overhead:FindFirstChild("Rarity")
-
-        if price and price.Text then
-            local value = parse_price(price.Text)
-
-            if value and value < lowestPrice then
-                lowestPrice = value
-                weakestBrain = v
-            end
-        end
+	if secretcheck == false then
+	        if price and price.Text and rarity.Text:lower() ~= "secret" then
+	            local value = parse_price(price.Text)
+	            if value and value < lowestPrice then
+	                lowestPrice = value
+	                weakestBrain = v
+	            end
+	        end
+	else
+		if price and price.Text then
+	            local value = parse_price(price.Text)
+	            if value and value < lowestPrice then
+	                lowestPrice = value
+	                weakestBrain = v
+	            end
+	        end
+	end
     end
 
     return weakestBrain, lowestPrice
@@ -228,20 +250,20 @@ function auto_buy_or_farm()
         print(hcekh)
         if hcekh == false then
             local highestOwnedPrice = get_highest_price_brain(tuoi)
-	    print(highestOwnedPrice)
+	        print(highestOwnedPrice)
             for _, v in pairs(workspace.MovingAnimals:GetChildren()) do
                 local rootPart = v:FindFirstChild("HumanoidRootPart")
                 if rootPart and rootPart:FindFirstChild("Info") then
                     local overhead = rootPart.Info:FindFirstChild("AnimalOverhead")
                     local price = overhead and overhead:FindFirstChild("Price")
                     local rarity = overhead and overhead:FindFirstChild("Rarity")
-		    local genation = overhead and overhead:FindFirstChild("Generation")
+		            local genation = overhead and overhead:FindFirstChild("Generation")
                     local displayname = overhead and overhead:FindFirstChild("DisplayName")
                     local value = tonumber(parse_price(price.Text))
                     local valuegen = tonumber(parse_price(genation.Text))
                     local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
                     local nho, sdf = get_lowest_price_brain(tuoi)
-		    print(sdf)
+		            print(sdf)
                     if valuegen >= tonumber(highestOwnedPrice) and not done[v] then
                             if currentCash > value then
                                 found = true
@@ -258,7 +280,7 @@ function auto_buy_or_farm()
                                                 done[v] = true
                                                 if rarity.Text:lower() == "secret" then
                                                     send_webhook(displayname.Text,price.Text,rarity.Text)
-							break
+							                        break
                                                 end
                                                 
                                             end
@@ -285,7 +307,7 @@ function auto_buy_or_farm()
                                                 done[v] = true
                                                 if rarity.Text:lower() == "secret" then
                                                     send_webhook(displayname.Text,price.Text,rarity.Text)
-						     break
+						                            break
                                                 end
                                                 
                                             end
