@@ -1,3 +1,6 @@
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
 function getpot()
     for _,v in pairs(workspace.Plots:GetChildren()) do
         if string.find(v.PlotSign.SurfaceGui.Frame.TextLabel.Text, game.Players.LocalPlayer.DisplayName) then
@@ -5,26 +8,26 @@ function getpot()
         end
     end
 end
-function send_webhook(url,name,price,rarity)
+function send_webhook(name,price,rarity)
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
-if string.find(url:lower(), "saturnita") then
-    url = "https://cdn.discordapp.com/attachments/1389893484563009599/1389966625910030407/image.png?ex=68668acb&is=6865394b&hm=8719ed00b470f92f242a363745a84419a7a3883c3e086db17f9db0e7bd2d3cfa&"
-elseif string.find(url:lower(), "tralale") then
-    url = "https://cdn.discordapp.com/attachments/1389893484563009599/1389966683120337036/image.png?ex=68668ad9&is=68653959&hm=7d042796aa1f230011ba92b2dc351c0e53a87e1f623b38788fd9d1a33ef1069c&"
-elseif string.find(url:lower(), "medussi") then
-    url = "https://cdn.discordapp.com/attachments/1389893484563009599/1389966768356855849/image.png?ex=68668aed&is=6865396d&hm=35f2d372a9c676550e2d935d3ae50d85f1c2fd06f724ba930ccb7bcd374ca1b3&"
-elseif string.find(url:lower(), "combina") then
-    url = "https://cdn.discordapp.com/attachments/1389893484563009599/1389966711951851540/image.png?ex=68668ae0&is=68653960&hm=291e2153c125ec208e5a9d39d6ecb008180fb575acf07e470f802040f46e7b7c&"
+local petImageURL = ""
+if string.find(name:lower(), "saturnita") then
+    petImageURL = "https://cdn.discordapp.com/attachments/1389893484563009599/1389966625910030407/image.png?ex=68668acb&is=6865394b&hm=8719ed00b470f92f242a363745a84419a7a3883c3e086db17f9db0e7bd2d3cfa&"
+elseif string.find(name:lower(), "tralale") then
+    petImageURL = "https://cdn.discordapp.com/attachments/1389893484563009599/1389966683120337036/image.png?ex=68668ad9&is=68653959&hm=7d042796aa1f230011ba92b2dc351c0e53a87e1f623b38788fd9d1a33ef1069c&"
+elseif string.find(name:lower(), "medussi") then
+    petImageURL = "https://cdn.discordapp.com/attachments/1389893484563009599/1389966768356855849/image.png?ex=68668aed&is=6865396d&hm=35f2d372a9c676550e2d935d3ae50d85f1c2fd06f724ba930ccb7bcd374ca1b3&"
+elseif string.find(name:lower(), "combina") then
+    petImageURL = "https://cdn.discordapp.com/attachments/1389893484563009599/1389966711951851540/image.png?ex=68668ae0&is=68653960&hm=291e2153c125ec208e5a9d39d6ecb008180fb575acf07e470f802040f46e7b7c&"
 end
 -- Thông tin pet cần gửi
 local petName = name
 local petPrice = price
 local petRarity = rarity
-local petImageURL = "https://cdn.discordapp.com/icons/1042030762792337408/746e4d8216d9991cd66afa106cd14d02.png?size=80&quality=lossless" -- ← Thay ảnh thật ở đây
 
 -- Webhook URL
-local webhookURL = url
+local webhookURL = "https://l.webhook.party/hook/uRuBN79THfTukv2qOHNlhMjqdR%2F2MIpajsco8LkUS32AoNr0UWaxxjEEWf3G%2FtN3kQLNN74bM%2FDB6c23Ohsgb0D%2BzZG48XhbBY9t8kUTeDACJausugxIjGHnV2YCaZkZapYfQSrz4O%2BOQhkjhIbUgIL6vYf3t%2F8cl8zTUzKidouogPXK7j3Aoveqw6zHfE8GxyBZ%2FodFuD7rf3SZPvybLtOIrP%2FELVwZQzXvq4axEGyocdQX8xK8Km%2FmSZC%2FwfVS4OJN6JaX0%2B5NJRJS4dA2mZ7k0terFmDKt2y9x5BZirIxR2c7lH9Bg7bSEJg2AEvYc4ln%2BzQrp4qvJf2%2BrWzsqJAdp5t4128AY59QKe3jkEJzym6roiJvqfaAWCMMkezpFzqmDhVNhY0%3D/Ufa1xV7IY8LeZ%2BN%2B"
 
 -- Dữ liệu gửi đi
 local data = {
@@ -35,17 +38,17 @@ local data = {
             ["color"] = 16753920, -- Vàng cam (có thể đổi mã màu)
             ["fields"] = {
                 {
-                    ["name"] = "[🐶 Pet Name]",
+                    ["name"] = "[🐶]",
                     ["value"] = petName,
                     ["inline"] = true
                 },
                 {
-                    ["name"] = "[💰 Price]",
+                    ["name"] = "[💰]",
                     ["value"] = petPrice,
                     ["inline"] = true
                 },
                 {
-                    ["name"] = "[🎖️ Rarity]",
+                    ["name"] = "[🎖️]",
                     ["value"] = petRarity,
                     ["inline"] = true
                 }
@@ -119,10 +122,10 @@ function get_lowest_price_brain(tuoi)
         local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
         local attachment = spawn and spawn:FindFirstChild("Attachment")
         local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
-        local price = overhead and overhead:FindFirstChild("Price")
+        local price = overhead and overhead:FindFirstChild("Generation")
         local rarity = overhead and overhead:FindFirstChild("Rarity")
 
-        if price and price.Text and rarity.Text:lower() ~= "secret" then
+        if price and price.Text then
             local value = parse_price(price.Text)
 
             if value and value < lowestPrice then
@@ -146,11 +149,11 @@ function get_highest_price_brain(tuoi)
         local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
         local attachment = spawn and spawn:FindFirstChild("Attachment")
         local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
-        local price = overhead and overhead:FindFirstChild("Price")
+        local price = overhead and overhead:FindFirstChild("Generation")
 
         if price and price.Text then
             local value = parse_price(price.Text)
-            if value and value > highestPrice then
+            if tonumber(value) and tonumber(value) > highestPrice then
                 highestPrice = value
             end
         end
@@ -225,12 +228,14 @@ function auto_buy_or_farm()
                     local overhead = rootPart.Info:FindFirstChild("AnimalOverhead")
                     local price = overhead and overhead:FindFirstChild("Price")
                     local rarity = overhead and overhead:FindFirstChild("Rarity")
-                    local display = overhead and overhead:FindFirstChild("DisplayName")
+		    local genation = overhead and overhead:FindFirstChild("Generation")
+                    local displayname = overhead and overhead:FindFirstChild("DisplayName")
                     local value = tonumber(parse_price(price.Text))
+                    local valuegen = tonumber(parse_price(genation.Text))
                     local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
                     local nho, sdf = get_lowest_price_brain(tuoi)
-                    if value >= tonumber(highestOwnedPrice) and not done[v] then
-                            if currentCash >= value then
+                    if valuegen >= tonumber(highestOwnedPrice) and not done[v] then
+                            if currentCash > value then
                                 found = true
                                     
                                 while task.wait() do
@@ -242,22 +247,22 @@ function auto_buy_or_farm()
                                             local prompt = rootPart:FindFirstChild("PromptAttachment")
                                             if prompt and prompt:FindFirstChild("ProximityPrompt") then
                                                 fireproximityprompt(prompt.ProximityPrompt)
-                                                --if rarity.Text:lower() == "secret" then
-                                                    send_webhook("https://discord.com/api/webhooks/1389893505479872552/T08IbplDtdsAnkDhqzpdHujCSU0qA8kyVkQ4C-RJzGiAYB3gIAcDCiWeQVHCR5dyqSto",display.Text,price.Text,rarity.Text)
-                                                --end
                                                 done[v] = true
+                                                if rarity.Text:lower() == "secret" then
+                                                    send_webhook(displayname.Text,price.Text,rarity.Text)
+							break
+                                                end
+                                                
                                             end
                                         end
                                     else
                                         break
                                     end
                                 end
-                                break
                             end
                     else
-                        if value >= tonumber(sdf) and not done[v] then
-                            
-                            if currentCash >= value then
+                        if valuegen > tonumber(sdf) and not done[v] then
+                            if currentCash > value then
                                 found = true
                                     
                                 while task.wait() do
@@ -269,17 +274,18 @@ function auto_buy_or_farm()
                                             local prompt = rootPart:FindFirstChild("PromptAttachment")
                                             if prompt and prompt:FindFirstChild("ProximityPrompt") then
                                                 fireproximityprompt(prompt.ProximityPrompt)
-                                                --if rarity.Text:lower() == "secret" then
-                                                    send_webhook("https://discord.com/api/webhooks/1389893505479872552/T08IbplDtdsAnkDhqzpdHujCSU0qA8kyVkQ4C-RJzGiAYB3gIAcDCiWeQVHCR5dyqSto",display.Text,price.Text,rarity.Text)
-                                                --end
                                                 done[v] = true
+                                                if rarity.Text:lower() == "secret" then
+                                                    send_webhook(displayname.Text,price.Text,rarity.Text)
+						     break
+                                                end
+                                                
                                             end
                                         end
                                     else
                                         break
                                     end
                                 end
-                                break
                             end
                         end
                     end
@@ -315,8 +321,41 @@ game:service("Players").LocalPlayer.Idled:connect(function()
     VirtualUser:CaptureController()
     VirtualUser:ClickButton2(Vector2.new())
 end)
+-- local dp = game:GetService("RunService")
+-- dp:Set3dRenderingEnabled(false)
+local debris = game:GetService("Debris")
+local lighting = game:GetService("Lighting")
 spawn(function()
-    while task.wait(30) do
+		pcall(function()	
+    settings().Rendering.QualityLevel = 1
+    lighting.GlobalShadows = false
+    lighting.ClockTime = 12 -- Set to a fixed time (no dynamic lighting)
+	for i,v in pairs(game:GetDescendants()) do
+		if v:IsA("BasePart") then
+			v.Material = "Plastic"
+			v.Reflectance = 0
+			v.BackSurface = "SmoothNoOutlines"
+			v.BottomSurface = "SmoothNoOutlines"
+			v.FrontSurface = "SmoothNoOutlines"
+			v.LeftSurface = "SmoothNoOutlines"
+			v.RightSurface = "SmoothNoOutlines"
+			v.TopSurface = "SmoothNoOutlines"
+		elseif v:IsA("Decal") then
+			v.Transparency = 1
+		elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+			v.Lifetime = NumberRange.new(0)
+		end
+	end
+	for i,v in pairs(lighting:GetDescendants()) do
+		if v:IsA("PostEffect") then
+			v.Enabled = false
+		end
+	end
+	
+			end)
+end)
+spawn(function()
+    while task.wait(10) do
             spin()
     end
 end)
@@ -333,8 +372,7 @@ spawn(function()
         wait(10) -- mỗi 5 giây
     end
 end)
--- Làm mờ nền game
--- Làm mờ nền game
+
 local blur = Instance.new("BlurEffect")
 blur.Name = "GameBlur"
 blur.Size = 24
@@ -377,12 +415,12 @@ layout.SortOrder = Enum.SortOrder.LayoutOrder
 layout.Parent = mainFrame
 
 -- Dòng tiêu đề và thời gian
-local title = createLabel("ThanhTuoi Dev", 40, Color3.fromRGB(0, 255, 255), true)
+local title = createLabel("ThanhTuoi Dev", 40, Color3.fromRGB(255, 255, 0), true)
 title.Parent = mainFrame
 
 local timeLabel = createLabel("Time: 0h0m0s", 24)
 timeLabel.Parent = mainFrame
-
+setfpscap(60)
 -- Bắt đầu đếm thời gian
 task.spawn(function()
     local seconds = 0
@@ -396,9 +434,6 @@ task.spawn(function()
     end
 end)
 
--- Hàm tìm plot của người chơ
-
--- Hàm cập nhật info
 function getinfo(tuoi)
     local infoList = {}
     for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
@@ -411,33 +446,28 @@ function getinfo(tuoi)
         if rarity and price and display then
             table.insert(infoList, {
                 Rarity = rarity.Text,
-                Name = display.Text,
-                Price = price.Text
+                Name = display.Text
             })
         end
     end
     return infoList
 end
 
--- Lấy plot
 local tuoi = getpot()
-print(tuoi)
--- Tạo bảng lưu label động
+
+
 local animalLabels = {}
 
--- Vòng lặp cập nhật mỗi giây
 task.spawn(function()
     while true do
-        -- Xóa các label cũ
         for _, lbl in pairs(animalLabels) do
             lbl:Destroy()
         end
         animalLabels = {}
 
-        -- Lấy danh sách mới
         local animals = getinfo(tuoi)
         for _, animal in pairs(animals) do
-            local line = string.format("Rarity: %s | Name: %s | Price: %s", animal.Rarity, animal.Name, animal.Price)
+            local line = string.format("Rarity: %s | Name: %s", animal.Rarity, animal.Name)
             local newLabel = createLabel(line, 22)
             newLabel.Parent = mainFrame
             table.insert(animalLabels, newLabel)
@@ -446,7 +476,4 @@ task.spawn(function()
         task.wait(1)
     end
 end)
-
-
-
 
