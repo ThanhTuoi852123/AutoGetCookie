@@ -83,7 +83,7 @@ http_request({
 })
 end
 function spin()
-    game:GetService("ReplicatedStorage"):FindFirstChild("Packages"):FindFirstChild("Net"):FindFirstChild("RE/RainbowSpinWheelService/Spin"):FireServer()
+    game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Net"):WaitForChild("RE/CandyEventService/Spin"):FireServer()
 end
 function check_brain(tuoi)
     for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
