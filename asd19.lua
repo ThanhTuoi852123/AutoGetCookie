@@ -119,45 +119,21 @@ function parse_price(text)
 
     return nil
 end
-function AllAreSecret(tuoi)
-    for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
-        local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
-        local attachment = spawn and spawn:FindFirstChild("Attachment")
-        local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
-        local rarity = overhead and overhead:FindFirstChild("Rarity")
-
-        if not (rarity and rarity.Text:lower() == "secret") then
-            return false
-        end
-    end
-    return true
-end
 
 function get_lowest_price_brain(tuoi)
     local lowestPrice = math.huge
     local weakestBrain = nil
-    local secretcheck = AllAreSecret(tuoi)
     for _, v in pairs(tuoi.AnimalPodiums:GetChildren()) do
         local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
         local attachment = spawn and spawn:FindFirstChild("Attachment")
         local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
-        local price = overhead and overhead:FindFirstChild("Generation")
+        local price = overhead and overhead:FindFirstChild("Price")
         local rarity = overhead and overhead:FindFirstChild("Rarity")
-	if secretcheck == false then
-	        if price and price.Text and rarity.Text:lower() ~= "secret" then
-	            local value = parse_price(price.Text)
-	            if value and value < lowestPrice then
+	if price and price.Text and rarity.Text:lower() ~= "secret" then
+		local value = parse_price(price.Text)
+	        if value and value < lowestPrice then
 	                lowestPrice = value
 	                weakestBrain = v
-	            end
-	        end
-	else
-		if price and price.Text then
-	            local value = parse_price(price.Text)
-	            if value and value < lowestPrice then
-	                lowestPrice = value
-	                weakestBrain = v
-	            end
 	        end
 	end
     end
@@ -176,7 +152,7 @@ function get_highest_price_brain(tuoi)
         local spawn = v:FindFirstChild("Base") and v.Base:FindFirstChild("Spawn")
         local attachment = spawn and spawn:FindFirstChild("Attachment")
         local overhead = attachment and attachment:FindFirstChild("AnimalOverhead")
-        local price = overhead and overhead:FindFirstChild("Generation")
+        local price = overhead and overhead:FindFirstChild("Price")
 
         if price and price.Text then
             local value = parse_price(price.Text)
@@ -264,7 +240,7 @@ function auto_buy_or_farm()
                     local currentCash = player:FindFirstChild("leaderstats"):FindFirstChild("Cash").Value
                     local nho, sdf = get_lowest_price_brain(tuoi)
 		            print(sdf)
-                    if valuegen >= tonumber(highestOwnedPrice) and not done[v] then
+                    if value >= tonumber(highestOwnedPrice) and not done[v] then
                             if currentCash > value then
                                 found = true
                                     
@@ -291,7 +267,7 @@ function auto_buy_or_farm()
                                 end
                             end
                     else
-                        if valuegen > tonumber(sdf) and not done[v] then
+                        if value > tonumber(sdf) and not done[v] then
                             if currentCash > value then
                                 found = true
                                     
