@@ -1,233 +1,57 @@
---[[
-    @author depso (depthso)
-    @description Grow a Garden stock bot script
-    https://www.roblox.com/games/126884695634066
-]]
+script_key="nnmWRrZqOPDxzNOlriLqcGAvLHcYgQjC";
+setfpscap(3)
 
-type table = {
-	[any]: any
+getgenv().gagConfig = {
+    -- Event:
+    CRAFT_EVENT = { "Anti Bee Egg" },
+    BUY_TRAVELING_MERCHANT = { "Bee Egg", "Loquat", "Feijoa", "Pitcher Plant" },
+    
+    -- General:
+    AUTO_UPDATE_RESTART = true,
+    REDEEM_CODES = {},
+    EXTRA_PET_SLOTS = 5,
+    EXTRA_EGG_SLOTS = 5,
+    ADD_FRIEND = true,
+    OPEN_ALL_SEED_PACK = true,
+
+    MAX_PLANTS = 400,
+    DESTROY_UNTIL_MIN_PLANTS = 400,
+    DELETE_PLANTS_AFTER_MAX = { "Carrot", "Strawberry", "Blueberry", "Tomato", "Apple" },
+    LIMIT_PLANT_SEED = { ["Strawberry"] = 5, ["Blueberry"] = 5, ["Apple"] = 5, ["Tomato"] = 5, ["Corn"] = 5, ["Bamboo"] = 5, ["Coconut"] = 5, ["Pumpkin"] = 5, ["Watermelon"] = 5, ["Pepper"] = 5 },
+    
+    BUY_EGGS = { "Bug Egg", "Bee Egg", "Paradise Egg", "Mythical Egg", "Rare Summer Egg", "Common Summer Egg", "Rare Egg", "Uncommon Egg", "Common Egg","Gourmet Egg" },
+    PLANT_EGGS = { "Gourmet Egg", "Corrupted Zen Egg", "Zen Egg", "Dinosaur Egg", "Primal Egg", "Anti Bee Egg", "Night Egg", "Bug Egg", "Paradise Egg", "Mythical Egg"},
+    
+    BUY_SEED_SHOP = { "Elder Strawberry", "Giant Pinecone", "Burning Bud", "Sugar Apple", "Ember Lily", "Beanstalk", "Cacao", "Pepper", "Mushroom", "Grape", "Mango", "Dragon Fruit", "Cactus", ["Coconut"] = 50, ["Bamboo"] = 50, ["Apple"] = 50, ["Pumpkin"] = 50, ["Watermelon"] = 50, ["Daffodil"] = 50, ["Tomato"] = 50, ["Orange Tulip"] = 50, ["Blueberry"] = 50, ["Strawberry"] = 50, ["Carrot"] = 50 },
+    KEEP_SEEDS = { "Bone Blossom" },
+    KEEP_SEEDS_AFTER_MAX_PLANTS = { "Carrot", "Strawberry", "Blueberry", "Tomato", "Apple" },
+    
+    FAVOURITE_FRUIT_MUTATIONS = {},  -- Stop Autosell
+    SKIP_HARVEST_MUTATIONS = {},  -- Stop Harvest
+
+    KEEP_PETS = { "French Fry Ferret", "Corrupted Kitsune", "Corrupted Kodama", "Raiju", "Kitsune", "Spinosaurus", "T-Rex", "Fennec Fox", "Disco Bee", "Raccoon", "Queen Bee", "Night Owl", "Dragonfly", "Butterfly", "Mimic Octopus", "Red Fox", "Blood Owl", "Chicken Zombie", "Blood Kiwi", "Chicken", "Rooster", "Mochi Mouse", "Spaghetti Sloth", ["Kodama"] = 8, "Axolotl", "Moon Cat" },
+    KEEP_PETS_WEIGHT = { ["Red Giant Ant"] = 5 },
+    KEEP_PETS_AGE = { ["Starfish"] = 75 },
+
+    EQUIP_PETS = { "Spaghetti Sloth", "Kodama" },
+    USE_PETS_FOR_UPGRADE_SLOT = { "Starfish" },
+    REMOVE_PET_MAX_UPGRADE = { "Capybara", "Starfish" },  -- Unequip from garden
+
+    BUY_GEAR_SHOP = { "Master Sprinkler", "Godly Sprinkler", "Advanced Sprinkler", "Basic Sprinkler", "Trading Ticket", "Levelup Lollipop" },
+    USE_SPRINKLER = { "Basic Sprinkler", "Master Sprinkler", "Godly Sprinkler", "Advanced Sprinkler" },
+
+    PET_WEBHOOK_URL = "",
+    SEED_WEBHOOK_URL = "", 
+    NOTIFY_PETS = { "French Fry Ferret", "Corrupted Kitsune", "Kitsune", "Disco Bee", "Queen Bee", "Dragonfly", "Butterfly", "Mimic Octopus", "Red Fox" },
+    NOTIFY_PETS_WEIGHT = { ["Red Giant Ant"] = 7, ["Pancake Mole"] = 7 },
+    DISCORD_ID = "",
+    WEBHOOK_NOTE = "khoai tay chien",
+    SHOW_WEBHOOK_USERNAME = true,
+    SHOW_WEBHOOK_JOBID = true,
 }
 
-_G.Configuration = {
-	--// Reporting
-	["Enabled"] = true,
-	["Webhook"] = "https://discord.com/api/webhooks.....", -- replace with your webhook url
-	["Weather Reporting"] = true,
-	
-	--// User
-	["Anti-AFK"] = true,
-	["Auto-Reconnect"] = true,
-	["Rendering Enabled"] = false,
-
-	--// Embeds
-	["AlertLayouts"] = {
-		["Weather"] = {
-			EmbedColor = Color3.fromRGB(42, 109, 255),
-		},
-		["SeedsAndGears"] = {
-			EmbedColor = Color3.fromRGB(56, 238, 23),
-			Layout = {
-				["ROOT/SeedStock/Stocks"] = "SEEDS STOCK",
-				["ROOT/GearStock/Stocks"] = "GEAR STOCK"
-			}
-		},
-		["EventShop"] = {
-			EmbedColor = Color3.fromRGB(212, 42, 255),
-			Layout = {
-				["ROOT/EventShopStock/Stocks"] = "EVENT STOCK"
-			}
-		},
-		["Eggs"] = {
-			EmbedColor = Color3.fromRGB(251, 255, 14),
-			Layout = {
-				["ROOT/PetEggStock/Stocks"] = "EGG STOCK"
-			}
-		},
-		["CosmeticStock"] = {
-			EmbedColor = Color3.fromRGB(255, 106, 42),
-			Layout = {
-				["ROOT/CosmeticStock/ItemStocks"] = "COSMETIC ITEMS STOCK"
-			}
-		}
-	}
-}
-
---// Services
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Players = game:GetService("Players")
-local HttpService = game:GetService("HttpService")
-local VirtualUser = cloneref(game:GetService("VirtualUser"))
-local RunService = game:GetService("RunService")
-local GuiService = game:GetService("GuiService")
-
---// Remotes
-local DataStream = ReplicatedStorage.GameEvents.DataStream -- RemoteEvent 
-local WeatherEventStarted = ReplicatedStorage.GameEvents.WeatherEventStarted -- RemoteEvent 
-
-local LocalPlayer = Players.LocalPlayer
-
-local function GetConfigValue(Key: string)
-	return _G.Configuration[Key]
-end
-
---// Set rendering enabled
-
---// Check if the script is already running
-if _G.StockBot then return end 
-_G.StockBot = true
-
-local function ConvertColor3(Color: Color3): number
-	local Hex = Color:ToHex()
-	return tonumber(Hex, 16)
-end
-
-local function GetDataPacket(Data, Target: string)
-	for _, Packet in Data do
-		local Name = Packet[1]
-		local Content = Packet[2]
-
-		if Name == Target then
-			return Content
-		end
-	end
-
-	return 
-end
-
-local function GetLayout(Type: string)
-	local Layouts = GetConfigValue("AlertLayouts")
-	return Layouts[Type]
-end
-
-local function WebhookSend(Type: string, Fields: table)
-	local Enabled = GetConfigValue("Enabled")
-	local Webhook = GetConfigValue("Webhook")
-
-	--// Check if reports are enabled
-	if not Enabled then return end
-
-	local Layout = GetLayout(Type)
-	local Color = ConvertColor3(Layout.EmbedColor)
-
-	--// Webhook data
-	local TimeStamp = DateTime.now():ToIsoDate()
-	local Body = {
-		embeds = {
-			{
-				color = Color,
-				fields = Fields,
-				footer = {
-					text = "Created by depso" -- Please keep
-				},
-				timestamp = TimeStamp
-			}
-		}
-	}
-
-	local RequestData = {
-        Url = Webhook,
-        Method = "POST",
-        Headers = {
-            ["Content-Type"] = "application/json"
-        },
-        Body = HttpService:JSONEncode(Body)
-    }
-
-	--// Send POST request to the webhook
-	task.spawn(request, RequestData)
-end
-
-local function MakeStockString(Stock: table): string
-	local String = ""
-	for Name, Data in Stock do 
-		local Amount = Data.Stock
-		local EggName = Data.EggName 
-
-		Name = EggName or Name
-		String ..= `{Name} **x{Amount}**\n`
-	end
-	
-	return String
-end
-
-local function ProcessPacket(Data, Type: string, Layout)
-	local Fields = {}
-	
-	local FieldsLayout = Layout.Layout
-	if not FieldsLayout then return end
-
-	for Packet, Title in FieldsLayout do 
-		local Stock = GetDataPacket(Data, Packet)
-		if not Stock then return end
-
-		local StockString = MakeStockString(Stock)
-		local Field = {
-			name = Title,
-			value = StockString,
-			inline = true
-		}
-		print(Field)
-		table.insert(Fields, Field)
-	end
-
-	WebhookSend(Type, Fields)
-end
-
-DataStream.OnClientEvent:Connect(function(Type: string, Profile: string, Data: table)
-	if Type ~= "UpdateData" then return end
-	if not Profile:find(LocalPlayer.Name) then return end
-
-	local Layouts = GetConfigValue("AlertLayouts")
-	for Name, Layout in Layouts do
-		ProcessPacket(Data, Name, Layout)
-	end
-end)
-
-WeatherEventStarted.OnClientEvent:Connect(function(Event: string, Length: number)
-	--// Check if Weather reports are enabled
-	local WeatherReporting = GetConfigValue("Weather Reporting")
-	if not WeatherReporting then return end
-
-	--// Calculate end unix
-	local ServerTime = math.round(workspace:GetServerTimeNow())
-	local EndUnix = ServerTime + Length
-
-	WebhookSend("Weather", {
-		{
-			name = "WEATHER",
-			value = `{Event}\nEnds:<t:{EndUnix}:R>`,
-			inline = true
-		}
-	})
-end)
-
---// Anti idle
-LocalPlayer.Idled:Connect(function()
-	--// Check if Anti-AFK is enabled
-	local AntiAFK = GetConfigValue("Anti-AFK")
-	if not AntiAFK then return end
-
-	VirtualUser:CaptureController()
-	VirtualUser:ClickButton2(Vector2.new())
-end)
-
---// Auto reconnect
-GuiService.ErrorMessageChanged:Connect(function()
-	local IsSingle = #Players:GetPlayers() <= 1
-	local PlaceId = game.PlaceId
-	local JobId = game.JobId
-
-	--// Check if Auto-Reconnect is enabled
-	local AutoReconnect = GetConfigValue("Auto-Reconnect")
-	if not AutoReconnect then return end
-
-	queue_on_teleport("https://rawscripts.net/raw/Grow-a-Garden-Grow-a-Garden-Stock-bot-41500")
-
-	--// Join a different server if the player is solo
-	if IsSingle then
-		TeleportService:Teleport(PlaceId, LocalPlayer)
-		return
-	end
-
-	TeleportService:TeleportToPlaceInstance(PlaceId, JobId, LocalPlayer)
-end)
+loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/c916e5b90dc37c71ecf1ec00dfce3d5d.lua"))()
+repeat
+    local success, err = pcall(function() loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/a2234a9cfbe480dfed9eaf6c00a012ca.lua"))() end)
+    task.wait(20)
+until success
