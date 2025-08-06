@@ -230,6 +230,7 @@ Eggs = {
   }
  },
 }
+}
 License = "qTtCbAWlIJxw3Lp2g9gMvZomk9BuHAju"
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Real-Aya/Loader/main/Init.lua'))()
 
