@@ -45,7 +45,6 @@ while wait(2) do
 		end
 	else
 		local playerFound = game.Players:FindFirstChild(playerNameToCheck)
-		print(playerFound.."Tuoidz")
 		if playerFound then
 			equipticket()
 			SendRequest:FireServer(
