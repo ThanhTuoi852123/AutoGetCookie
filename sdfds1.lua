@@ -18,100 +18,135 @@ mt.__namecall = function(self, ...)
 end
 setreadonly(mt, true)
 getgenv().ConfigsKaitun = {
-	["Block Pet Gift"] = true,
-
-	Collect_Cooldown = 30, -- cooldown to collect fruit
-	JustFuckingCollectAll = false, -- Collect all (fruit not wait mutation)
+["Block Pet Gift"] = true, 
+["Low Cpu"] = true,
+JustFuckingCollectAll = true, -- Collect all (fruit not wait mutation)
+ ["Rejoin When Update"] = false,
  
-	["Low Cpu"] = true,
-	["Auto Rejoin"] = true,
+ ["Limit Tree"] = {
+  ["Limit"] = 300,
+  ["Destroy Untill"] = 300,
 
-	["Rejoin When Update"] = true,
-	["Limit Tree"] = {
-		["Limit"] = 300,
-		["Destroy Untill"] = 250,
+  ["Safe Tree"] = {
+   "Bone Blossom",
+   "Fossilight",
+   "Cacao",
+   "Serenity",
+   "Sugar Apple",
+   "Ember Lily",
+   "Beanstalk",
+   "Giant Pinecone",
+   "Pepper",
+   "Burning Bud",
+   "Grape",
+   "Maple Apple",
+   "Sunflower",
+   "Elephant Ears",
+   "Dragon Pepper",
+   "Mango",
+   "Coconut",
+   -- locked fruit for zen event
+			["Serenity"] = 10, ["Strawberry"] = 5, ["Blueberry"] = 5,
+  }
+ },
 
-		["Safe Tree"] = {
-			"Moon Blossom",
-		}
-	},
 
-	Seed = {
-		Buy = {
-			Mode = "Auto", -- Custom , Auto
-			Custom = {
-				"Carrot",
-			}
-		},
-		Place = {
-			Mode = "Lock", -- Select , Lock
-			Select = {
-				"Carrot",
-			},
-			Lock = {
-				"Sunflower",
-			}
-		}
-	},
+ Seed = {
+  Buy = {
+   Mode = "Auto", -- Custom , Auto
+   Custom = {
+    "Carrot",
+    "Bamboo",
+    "Pumpkin",
+    "Daffodil",
+    "Orange Tulip",
+    "Watermelon",
+    "Mushroom",
+    "Nightshade",
+    "Beanstalk",
+   }
+  },
+  Place = {
+   Mode = "Select", -- Select , Lock
+   Select = {
+    "Cacao",
+    "Serenity",
+				"Zen Rocks",
+				"Hinomai",
+				"Maple Apple",
+    "Giant Pinecone",
+    "Pepper",
+    "Burning Bud",
+    "Mushroom",
+    "Bone Blossom",
+       "Maple Apple",
+       "Grape",
+    "Mango",
+       "Coconut",
+   },
+   Lock = {
+   }
+  }
+ },
 
-	["Seed Pack"] = {
-		Locked = {
+ ["Seed Pack"] = {
+  Locked = {
 
-		}
-	},
+  }
+ },
 
-	Events = {
-		["Cook Event"] = {
+ Events = {
+  ["Cook Event"] = {
 			Minimum_Money = 30_000_000, -- minimum money to start play this event
-		},
-                ["Traveling Shop"] = {
-			"Bee Egg"
-		},
-		Craft = {
-			"Primal Egg",
-			"Ancient Seed Pack",
-			"Bee Egg",
-			"Anti Bee Egg",
-			"Lightning Rod",
-		},
-		Shop = {
-			"Zen Egg",
-                        "Zen Seed Pack",
-		},
-		Start_Do_Honey = 2_000_000 -- start trade fruit for honey at money
-	},
+  ["Traveling Shop"] = {
+   "Bald Eagle",
+   "Night Staff",
+   "Star Caller",
+   "Bee Egg",
+  },
+  Craft = {
+   "Lightning Rod",
+   "Anti Bee Egg",
+  },
+  Shop = {
+   "Zen Egg",
+  },
+  Restocks_limit = 1000000000,
+  MinimumChi = 10
+ },
 
-	Gear = {
-		Buy = { 
-			"Watering Can",
-			"Trading Ticket",
-			"Master Sprinkler",
-			"Basic Sprinkler",
-			"Godly Sprinkler",
-			"Advanced Sprinkler",
-			"Lightning Rod",
-			"Tanning Mirror",
-			"Medium Treat",
-			"Medium Toy",
-		},
-		Lock = {
+ Gear = {
+  Buy = { 
+   "Master Sprinkler",
+   "Trading Ticket",
+   "Godly Sprinkler",
+   "Advanced Sprinkler",
+   "Basic Sprinkler",
+   "Lightning Rod",
+   "Level Up Lollipop",
+   "Medium Treat",
+   "Medium Toy",
+  },
+  Lock = {
+   "Godly Sprinkler",
+            "Master Sprinkler",
+            "Level Up Lollipop"
+  },
+ },
 
-		},
-	},
-
-	Eggs = {
+Eggs = {
 		Place = {
-                        "Gourmet Egg",
-			"Zen Egg",
-			"Primal Egg",
-			"Dinosaur Egg",
-			"Oasis Egg",
-			"Anti Bee Egg",
-			"Paradise Egg",
-			"Night Egg",
-			"Bug Egg",
-			"Mythical Egg",
-			"Common Summer Egg",
+                        "Anti Bee Egg",
+"Paradise Egg",
+"Bee Egg",
+"Night Egg",
+"Bug Egg",
+"Mythical Egg",
+"Rare Egg",
+"Rare Summer Egg",
+"Common Summer Egg",
+"Common Egg",
+"Gourmet Egg",
 		},
 		Buy = {
 			"Anti Bee Egg",
@@ -120,92 +155,80 @@ getgenv().ConfigsKaitun = {
 			"Night Egg",
 			"Bug Egg",
 			"Mythical Egg",
+			"Rare Egg",
+			"Rare Summer Egg",
 			"Common Summer Egg",
-                        "Common Egg",
-		}
-	},
+			"Common Egg",
+                }
+ },
 
-	Pets = {
-		["Start Delete Pet At"] = 40,
-		["Upgrade Slot"] = {
-			["Pet"] = {
-				["Starfish"] = { 5, 100, 1 },
-                                ["Capybara"] = { 3, 100, 2 }, 
-			},
-			["Limit Upgrade"] = 5,
-			["Equip When Done"] = {
-				["Seal"] = { 8, 100 },
-                                ["Blood Kiwi"] = { 8, 100 },
-                                ["Ostrich"] = { 5, 60 },
-			},
-		},
-		Locked_Pet_Age = 60, -- pet that age > 60 will lock
-		Locked = {
-                        "French Fry Ferret",
-			"Corrupted Kitsune",
-			"Raiju",
-			"Koi",
-                        "Kitsune",
-			"Spinosaurus",
-			"T-Rex",
+ Pets = {
+  ["Start Delete Pet At"] = 40,
+  ["Upgrade Slot"] = {
+   ["Pet"] = {
+    ["Starfish"] = { 8, 76 },
+   },
+   ["Limit Upgrade"] = 8,
+   ["Equip When Done"] = {
+    ["Tanchozuru"] = { 8, 100 },
+   },
+  },
+  Favorite_LockedPet = true,
+  Locked_Pet_Age = 60, -- pet that age > 60 will lock
+  Locked = {
+   "T-Rex",
 			"Dragonfly",
-			"Night Owl",
-			"Queen Bee",
+			"Spinosaurus",
 			"Raccoon",
-			"Disco Bee",
+                        "French Fry Ferret",
 			"Fennec Fox",
 			"Disco Bee",
 			"Butterfly",
 			"Mimic Octopus",
-			"Queen Bee",
-			"Red Fox",
-                        ["Ostrich"] = 8,
-			["Capybara"] = 5,
-			["Rooster"] = 6,
-			["Blood Kiwi"] = 6,
-			["Seal"] = 8,
-		},
-		LockPet_Weight = 6, -- if Weight >= 10 they will locked,
-		Instant_Sell = {
-			"Shiba Inu",
-			"Dog",
-                        "Seagull",
-                        "Crab",
-		}
-	},
+			"Kitsune",
+			"Corrupted Kitsune",
+			["Starfish"] = 15,
+			["Tanchozuru"] = 10,
+                                                                ["Kodama"] = 8,
+  },
+  LockPet_Weight = 4, -- if Weight >= 10 they will locked,
+  Instant_Sell = {
+   "Dog",
+   "Bunny",
+   "Golden Lab",
+    }
+ },
 
-	Webhook = {
-		UrlPet = "https://discord.com/api/webhooks/1388798866467324045/1DD7lj5tsSzO3Y4FrJFcOwdUGg6gyA0nGT6F8Kfk06pdHRJBCu9k7fyu5hIvTU5AZSap",
-		UrlSeed = "Url Here",
-		PcName = "NVT123",
+ Webhook = {
+  UrlPet = "",
+  UrlSeed = "",
+  PcName = "huan",
 
-		Noti = {
-			Seeds = {
-				"Sunflower",
-				"Dragon Pepper",
-				"Elephant Ears",
-			},
-			SeedPack = {
-				"Idk"
-			},
-			Pets = {
-                                "French Fry Ferret",
-			        "Corrupted Kitsune",
-                                "Kitsune",
-                                "Spinosaurus",
+  Noti = {
+   Seeds = {
+    "Sunflower",
+    "Dragon Pepper",
+    "Elephant Ears",
+   },
+   SeedPack = {
+    "Idk",
+   },
+  Pets = {
 			        "T-Rex",
-				"Disco Bee",
-				"Butterfly",
-				"Mimic Octopus",
-				"Queen Bee",
-				"Fennec Fox",
-				"Dragonfly",
-				"Raccoon",
-				"Red Fox",
-			},
-			Pet_Weight_Noti = true,
-		}
-	},
+   "Dragonfly",
+   "Spinosaurus",
+   "Raccoon",
+   "Fennec Fox",
+   "Corrupted Kitsune",
+   "French Fry Ferret",
+   "Disco Bee",
+   "Butterfly",
+   "Mimic Octopus",
+   "Kitsune",
+   },
+   Pet_Weight_Noti = true,
+  }
+ },
 }
 License = "qTtCbAWlIJxw3Lp2g9gMvZomk9BuHAju"
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Real-Aya/Loader/main/Init.lua'))()
