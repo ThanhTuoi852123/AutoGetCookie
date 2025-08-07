@@ -50,6 +50,11 @@ while wait(2) do
 			SendRequest:FireServer(
 				Players.ThanhTuoi_IsFake
 			)
+			additem()
+			wait(1)
+			Accept:FireServer()
+			wait(1)
+			Confirm:FireServer()
 		else
 				wait(10)
 		end
