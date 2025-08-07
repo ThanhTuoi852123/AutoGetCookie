@@ -20,7 +20,7 @@ function equipticket()
 	end
 end
 function additem()
-	local listpet = {"Kitsune", "Dragonfly", "French", "Raiju","Red Fox","Mimic Octopus"} 
+	local listpet = {"Kitsune", "Dragonfly", "French", "Raiju","Red Fox","Mimic Octopus","Mochi","Spaghetti"} 
 	for _, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 		for _, petName in ipairs(listpet) do
 			if string.find(v.Name, petName) then
