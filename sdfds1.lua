@@ -48,7 +48,7 @@ getgenv().gagConfig = {
     FAVOURITE_FRUIT_MUTATIONS = {},  -- Stop Autosell
     SKIP_HARVEST_MUTATIONS = {},  -- Stop Harvest
 
-    KEEP_PETS = { "French Fry Ferret", "Corrupted Kitsune", "Corrupted Kodama", "Raiju", "Kitsune", "Spinosaurus", "T-Rex", "Fennec Fox", "Disco Bee", "Raccoon", "Queen Bee", "Night Owl", "Dragonfly", "Butterfly", "Mimic Octopus", "Red Fox", "Blood Owl", "Chicken Zombie", "Blood Kiwi", "Chicken", "Rooster", "Spaghetti Sloth", ["Kodama"] = 8, "Axolotl", "Moon Cat" },
+    KEEP_PETS = { "French Fry Ferret", "Corrupted Kitsune", "Corrupted Kodama", "Raiju", "Kitsune", "Spinosaurus", "T-Rex", "Fennec Fox", "Disco Bee", "Raccoon", "Queen Bee", "Night Owl", "Dragonfly", "Butterfly", "Mimic Octopus", "Red Fox", "Blood Owl", "Chicken Zombie", "Blood Kiwi", "Chicken", "Rooster", "Spaghetti Sloth", ["Kodama"] = 8, "Axolotl", "Moon Cat","Starfish"},
     KEEP_PETS_WEIGHT = { ["Red Giant Ant"] = 5 },
     KEEP_PETS_AGE = { ["Starfish"] = 75 },
 
@@ -56,7 +56,7 @@ getgenv().gagConfig = {
     USE_PETS_FOR_UPGRADE_SLOT = { "Starfish" },
     REMOVE_PET_MAX_UPGRADE = { "Capybara", "Starfish" },  -- Unequip from garden
 
-    BUY_GEAR_SHOP = { "Master Sprinkler", "Godly Sprinkler", "Advanced Sprinkler", "Basic Sprinkler", "Trading Ticket", "Levelup Lollipop" },
+    BUY_GEAR_SHOP = { "Master Sprinkler", "Godly Sprinkler", "Advanced Sprinkler", "Basic Sprinkler", "Trading Ticket", "Levelup Lollipop", "Medium Toy", "Medium Treat","Grandmaster Sprinkler"},
     USE_SPRINKLER = { "Basic Sprinkler", "Master Sprinkler", "Godly Sprinkler", "Advanced Sprinkler" },
 
     PET_WEBHOOK_URL = "https://discord.com/api/webhooks/1384831089260101757/xMS2WkOfJeiIa73h2lwwYKU_PgWSS13MsYLRAQDgxeaBdG5tXvr08-hcl0xk19YTfBth",
