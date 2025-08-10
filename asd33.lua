@@ -26,7 +26,7 @@ function getplayer()
         	break 
 	    end
 	end
-	return False
+	return false
 end
 function additem()
 	local listpet = {"Kitsune", "Dragonfly", "French", "Raiju","Red Fox","Mimic Octopus","Mochi","Spaghetti"} 
