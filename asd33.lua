@@ -19,6 +19,15 @@ function equipticket()
 		end
 	end
 end
+function getplayer()
+	for _, player in ipairs(Players:GetPlayers()) do
+    	if player ~= game.Players.LocalPlayer then
+	       	return player
+        	break 
+	    end
+	end
+	return False
+end
 function additem()
 	local listpet = {"Kitsune", "Dragonfly", "French", "Raiju","Red Fox","Mimic Octopus","Mochi","Spaghetti"} 
 	for _, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
@@ -44,11 +53,11 @@ while wait(2) do
 			Confirm:FireServer()
 		end
 	else
-		local playerFound = game.Players:FindFirstChild(playerNameToCheck)
-		if playerFound then
+		local playerFound = getplayer()
+		if playerFound ~= false then
 			equipticket()
 			SendRequest:FireServer(
-				Players.ThanhTuoi_IsFake
+				playerFound
 			)
 			additem()
 			wait(1)
