@@ -44,6 +44,18 @@ function equipticket()
 		end
 	end
 end
+function checktrade()
+	local trong = 0
+	for _, player in ipairs(game.Players:GetPlayers()) do
+    	if player ~= game.Players.LocalPlayer then
+	       	trong = trong + 1
+	    end
+	end
+	if trong == 2 then
+		return true
+	end
+	return false
+end
 function getplayer()
 	for _, player in ipairs(game.Players:GetPlayers()) do
     	if player ~= game.Players.LocalPlayer then
@@ -76,20 +88,22 @@ while wait(2) do
 			Confirm:FireServer()
 		end
 	else
-		local playerFound = getplayer()
-		print(playerFound)
-		if playerFound ~= false then
-			equipticket()
-			SendRequest:FireServer(
-				playerFound
-			)
-			additem(additemFromWeb())
-			wait(1)
-			Accept:FireServer()
-			wait(1)
-			Confirm:FireServer()
-		else
-				wait(10)
+		if checktrade() then
+			local playerFound = getplayer()
+			print(playerFound)
+			if playerFound ~= false then
+				equipticket()
+				SendRequest:FireServer(
+					playerFound
+				)
+				additem(additemFromWeb())
+				wait(1)
+				Accept:FireServer()
+				wait(1)
+				Confirm:FireServer()
+			else
+					wait(10)
+			end
 		end
 	end
 	end)
