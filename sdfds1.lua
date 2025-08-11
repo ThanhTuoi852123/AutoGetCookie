@@ -59,7 +59,7 @@ getgenv().gagConfig = {
     KEEP_PETS = { "Sunny-Side Chicken","Sushi Bear", "Junkbot", "Gorilla Chef", "Lobster Thermidor", "French Fry Ferret","Corrupted Kitsune","Raiju","Axolotl","Koi","Tanchozuru","Kitsune","Dilophosaurus","Moon Cat","Capybara","Spinosaurus","T-Rex","Brontosaurus","Disco Bee","Butterfly","Queen Bee","Dragonfly","Raccoon","Fennec Fox","Mimic Octopus","Red Fox","Blood Owl","Blood Kiwi","Rooster","Chicken","Cooked Owl","Kiwi","Starfish", "Seal", "Kodama" },
     KEEP_PETS_AGE = { ["Starfish"] = 75 },
 
-    EQUIP_PETS = { "Gorilla Chef","Sushi Bear", "Kodama", "Junkbot", "Corrupted Kodama", "Tanchozuru", "Sunny-Side Chicken", "Bald Eagle", ["Rooster"] = 2, ["Blood Kiwi"] = 2, ["Capybara"] = 1, ["Starfish"] = 1, ["Chicken"] = 2 },
+    EQUIP_PETS = { "Gorilla Chef","Sushi Bear", "Kodama", "Junkbot", "Corrupted Kodama"},
     USE_PETS_FOR_UPGRADE_SLOT = { "Starfish" },
     REMOVE_PET_MAX_UPGRADE = { "Capybara", "Starfish" },  -- Unequip from garden
 
