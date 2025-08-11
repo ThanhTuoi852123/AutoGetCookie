@@ -52,10 +52,10 @@ getgenv().gagConfig = {
     FAVOURITE_FRUIT_MUTATIONS = {},  -- Stop Autosell
     SKIP_HARVEST_MUTATIONS = {},  -- Stop Harvest
 
-    KEEP_PETS = {"Bacon Pig","Junkbot","Hotdog Daschund","Lobster Thermidor","Bald Eagle", "Sunny-Side Chicken", "Junkbot", "Gorilla Chef", "Lobster Thermidor", "French Fry Ferret","Corrupted Kitsune","Raiju","Axolotl","Koi","Tanchozuru","Kitsune","Dilophosaurus","Moon Cat","Spinosaurus","T-Rex","Brontosaurus","Disco Bee","Butterfly","Queen Bee","Dragonfly","Raccoon","Fennec Fox","Mimic Octopus","Red Fox","Blood Owl","Blood Kiwi","Rooster","Chicken","Cooked Owl","Kiwi", "Seal" },
+    KEEP_PETS = {"Bacon Pig","Kodama","Corrupted Kodama","Junkbot","Hotdog Daschund","Lobster Thermidor","Bald Eagle", "Sunny-Side Chicken", "Junkbot", "Gorilla Chef", "Lobster Thermidor", "French Fry Ferret","Corrupted Kitsune","Raiju","Axolotl","Koi","Tanchozuru","Kitsune","Dilophosaurus","Moon Cat","Spinosaurus","T-Rex","Brontosaurus","Disco Bee","Butterfly","Queen Bee","Dragonfly","Raccoon","Fennec Fox","Mimic Octopus","Red Fox","Blood Owl","Blood Kiwi","Rooster","Chicken","Cooked Owl","Kiwi", "Seal" },
     KEEP_PETS_AGE = { ["Starfish"] = 75 },
 
-    EQUIP_PETS = {"Bacon Pig","Junkbot","Tanchozuru","Cooked Owl","Gorilla Chef", "Sunny-Side Chicken", "Bald Eagle", ["Rooster"] = 2, ["Blood Kiwi"] = 2, ["Chicken"] = 2 ,"Starfish"},
+    EQUIP_PETS = {"Bacon Pig","Junkbot","Kodama","Corrupted Kodama","Tanchozuru","Cooked Owl","Gorilla Chef", "Sunny-Side Chicken", "Bald Eagle", ["Rooster"] = 2, ["Blood Kiwi"] = 2, ["Chicken"] = 2 ,"Starfish"},
     USE_PETS_FOR_UPGRADE_SLOT = { "Starfish" },
     REMOVE_PET_MAX_UPGRADE = { "Capybara", "Starfish" },  -- Unequip from garden
 
