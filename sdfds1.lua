@@ -47,7 +47,7 @@ getgenv().gagConfig = {
 
 
     BUY_EGGS = { "Bug Egg", "Bee Egg", "Paradise Egg", "Mythical Egg", "Rare Summer Egg", "Common Summer Egg", "Rare Egg", "Uncommon Egg" },
-    PLANT_EGGS = { "Gourmet Egg", "Corrupted Zen Egg", "Zen Egg", "Dinosaur Egg", "Primal Egg", "Anti Bee Egg", "Bee Egg", "Night Egg", "Bug Egg", "Paradise Egg", "Mythical Egg", "Common Summer Egg", "Rare Egg", "Uncommon Egg" },
+    PLANT_EGGS = { "Gourmet Egg", "Corrupted Zen Egg", "Zen Egg", "Dinosaur Egg", "Primal Egg", "Anti Bee Egg", "Bee Egg", "Night Egg", "Bug Egg", "Paradise Egg", "Mythical Egg"},
     
     BUY_SEED_SHOP = { "Elder Strawberry", "Giant Pinecone", "Burning Bud", "Sugar Apple", "Ember Lily", "Beanstalk", "Cacao", "Pepper", "Mushroom", "Grape", "Mango", "Dragon Fruit", "Cactus", ["Coconut"] = 50, ["Bamboo"] = 50, ["Apple"] = 50, ["Pumpkin"] = 50, ["Watermelon"] = 50, ["Daffodil"] = 50, ["Tomato"] = 50, ["Orange Tulip"] = 50, ["Blueberry"] = 50, ["Strawberry"] = 50, ["Carrot"] = 50 },
     KEEP_SEEDS = { "Bone Blossom" },
@@ -56,10 +56,10 @@ getgenv().gagConfig = {
     FAVOURITE_FRUIT_MUTATIONS = {},  -- Stop Autosell
     SKIP_HARVEST_MUTATIONS = {},  -- Stop Harvest
 
-    KEEP_PETS = { "Sunny-Side Chicken", "Junkbot", "Gorilla Chef", "Lobster Thermidor", "French Fry Ferret","Corrupted Kitsune","Raiju","Axolotl","Koi","Tanchozuru","Kitsune","Dilophosaurus","Moon Cat","Capybara","Spinosaurus","T-Rex","Brontosaurus","Disco Bee","Butterfly","Queen Bee","Dragonfly","Raccoon","Fennec Fox","Mimic Octopus","Red Fox","Blood Owl","Blood Kiwi","Rooster","Chicken","Cooked Owl","Kiwi","Starfish", "Seal", "Kodama" },
+    KEEP_PETS = { "Sunny-Side Chicken","Sushi Bear", "Junkbot", "Gorilla Chef", "Lobster Thermidor", "French Fry Ferret","Corrupted Kitsune","Raiju","Axolotl","Koi","Tanchozuru","Kitsune","Dilophosaurus","Moon Cat","Capybara","Spinosaurus","T-Rex","Brontosaurus","Disco Bee","Butterfly","Queen Bee","Dragonfly","Raccoon","Fennec Fox","Mimic Octopus","Red Fox","Blood Owl","Blood Kiwi","Rooster","Chicken","Cooked Owl","Kiwi","Starfish", "Seal", "Kodama" },
     KEEP_PETS_AGE = { ["Starfish"] = 75 },
 
-    EQUIP_PETS = { "Gorilla Chef", "Kodama", "Junkbot", "Corrupted Kodama", "Tanchozuru", "Sunny-Side Chicken", "Bald Eagle", ["Rooster"] = 2, ["Blood Kiwi"] = 2, ["Capybara"] = 1, ["Starfish"] = 1, ["Chicken"] = 2 },
+    EQUIP_PETS = { "Gorilla Chef","Sushi Bear", "Kodama", "Junkbot", "Corrupted Kodama", "Tanchozuru", "Sunny-Side Chicken", "Bald Eagle", ["Rooster"] = 2, ["Blood Kiwi"] = 2, ["Capybara"] = 1, ["Starfish"] = 1, ["Chicken"] = 2 },
     USE_PETS_FOR_UPGRADE_SLOT = { "Starfish" },
     REMOVE_PET_MAX_UPGRADE = { "Capybara", "Starfish" },  -- Unequip from garden
 
