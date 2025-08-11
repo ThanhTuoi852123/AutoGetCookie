@@ -1,8 +1,6 @@
 -- danh sách pet cần tìm
 repeat task.wait() until game:IsLoaded()
 wait(10)
-if game.PrivateServerId ~= "" then
-    if game.PrivateServerOwnerId ~= 0 then
         local Players = game:GetService("Players")
 		local ReplicatedStorage = game:GetService("ReplicatedStorage")
 		local AddItem = ReplicatedStorage.GameEvents.TradeEvents.AddItem -- RemoteEvent 
@@ -108,11 +106,5 @@ if game.PrivateServerId ~= "" then
 			end
 			end)
 		end
-    else
-        print("Server Reserved (không có chủ, thường được tạo qua TeleportService)")
-    end
-else
-    print("Server Public")
-end
 
 
