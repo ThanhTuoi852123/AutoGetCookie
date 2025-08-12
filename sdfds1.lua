@@ -56,7 +56,7 @@ getgenv().gagConfig = {
     FAVOURITE_FRUIT_MUTATIONS = {},  -- Stop Autosell
     SKIP_HARVEST_MUTATIONS = {},  -- Stop Harvest
 
-    KEEP_PETS = { "Sunny-Side Chicken","Sushi Bear", "Junkbot", "Gorilla Chef", "Lobster Thermidor", "French Fry Ferret","Corrupted Kitsune","Raiju","Axolotl","Koi","Tanchozuru","Kitsune","Dilophosaurus","Moon Cat","Capybara","Spinosaurus","T-Rex","Brontosaurus","Disco Bee","Butterfly","Queen Bee","Dragonfly","Raccoon","Fennec Fox","Mimic Octopus","Red Fox","Blood Owl","Blood Kiwi","Rooster","Chicken","Cooked Owl","Kiwi","Starfish", "Seal", "Kodama" },
+    KEEP_PETS = { "Sunny-Side Chicken","Sushi Bear", "Junkbot", "Gorilla Chef", "Lobster Thermidor", "French Fry Ferret","Hotdog Daschund","Corrupted Kitsune","Raiju","Axolotl","Koi","Tanchozuru","Kitsune","Dilophosaurus","Moon Cat","Capybara","Spinosaurus","T-Rex","Brontosaurus","Disco Bee","Butterfly","Queen Bee","Dragonfly","Raccoon","Fennec Fox","Mimic Octopus","Red Fox","Blood Owl","Blood Kiwi","Rooster","Chicken","Cooked Owl","Kiwi","Starfish", "Seal", "Kodama" },
     KEEP_PETS_AGE = { ["Starfish"] = 75 },
 
     EQUIP_PETS = { "Gorilla Chef","Sushi Bear", "Kodama", "Junkbot", "Corrupted Kodama"},
