@@ -96,7 +96,7 @@ getgenv().ConfigsKaitun = {
 	Events = {
 		["Cook Event"] = {
 			Minimum_Money = 30_000_000, -- minimum money to start play this event
-			Rewards_Item = { "Culinarian Chest", "Gorilla Chef", "Gourmet Egg", "Sunny-Side Chicken", "Pet Shard Aromatic", "Cooking Cauldron", "Gourmet Seed Pack", "Bitter Melon Seed", "Pricklefruit Seed", "Butternut Squash Seed", "Spring Onion Seed", "Kitchen Crate", "Kitchen Flooring", "Kitchen Cart", "Smoothie Fountain" }
+			Rewards_Item = { "Culinarian Chest", "Gorilla Chef", "Gourmet Egg","Sushi Bear", "Sunny-Side Chicken", "Pet Shard Aromatic", "Cooking Cauldron", "Gourmet Seed Pack", "Bitter Melon Seed", "Pricklefruit Seed", "Butternut Squash Seed", "Spring Onion Seed", "Kitchen Crate", "Kitchen Flooring", "Kitchen Cart", "Smoothie Fountain" }
 		},
 		["Traveling Shop"] = {
 			"Bee Egg",
@@ -194,7 +194,7 @@ getgenv().ConfigsKaitun = {
 		},
 		Favorite_LockedPet = false,
 		Locked_Pet_Age = 60, 
-		Locked = { ["Sunny-Side Chicken"] = 8, "Junkbot", ["Gorilla Chef"] = 8, "Lobster Thermidor", "French Fry Ferret","Corrupted Kitsune","Raiju","Axolotl","Koi","Tanchozuru","Kitsune","Dilophosaurus","Moon Cat","Capybara","Spinosaurus","T-Rex","Brontosaurus","Disco Bee","Butterfly","Queen Bee","Dragonfly","Raccoon","Fennec Fox","Mimic Octopus","Red Fox","Blood Owl","Blood Kiwi","Rooster","Chicken","Cooked Owl","Kiwi", ["Starfish"] = 8, "Seal", "Kodama" },
+		Locked = { ["Sunny-Side Chicken"] = 8, "Junkbot","Sushi Bear", ["Gorilla Chef"] = 8, "Lobster Thermidor", "French Fry Ferret","Corrupted Kitsune","Raiju","Axolotl","Koi","Tanchozuru","Kitsune","Dilophosaurus","Moon Cat","Capybara","Spinosaurus","T-Rex","Brontosaurus","Disco Bee","Butterfly","Queen Bee","Dragonfly","Raccoon","Fennec Fox","Mimic Octopus","Red Fox","Blood Owl","Blood Kiwi","Rooster","Chicken","Cooked Owl","Kiwi", ["Starfish"] = 8, "Seal", "Kodama" },
 		LockPet_Weight = 10, 
 	},
 
