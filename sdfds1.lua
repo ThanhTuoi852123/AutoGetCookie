@@ -138,6 +138,7 @@ getgenv().ConfigsKaitun = {
 			"Lightning Rod",
 			"Levelup Lollipop",
 			"Trading Ticket",
+			"Medium Treat",
 		},
 	},
 
