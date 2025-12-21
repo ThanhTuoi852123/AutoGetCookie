@@ -8,79 +8,7 @@ function getpot()
         end
     end
 end
-function send_webhook(name,price,rarity)
-local HttpService = game:GetService("HttpService")
-local player = game.Players.LocalPlayer
-local petImageURL = ""
-if string.find(name:lower(), "saturnita") then
-    petImageURL = "https://cdn.discordapp.com/attachments/1389893484563009599/1389966625910030407/image.png?ex=68668acb&is=6865394b&hm=8719ed00b470f92f242a363745a84419a7a3883c3e086db17f9db0e7bd2d3cfa&"
-elseif string.find(name:lower(), "tralale") then
-    petImageURL = "https://cdn.discordapp.com/attachments/1389893484563009599/1389966683120337036/image.png?ex=68668ad9&is=68653959&hm=7d042796aa1f230011ba92b2dc351c0e53a87e1f623b38788fd9d1a33ef1069c&"
-elseif string.find(name:lower(), "medussi") then
-    petImageURL = "https://cdn.discordapp.com/attachments/1389893484563009599/1389966768356855849/image.png?ex=68668aed&is=6865396d&hm=35f2d372a9c676550e2d935d3ae50d85f1c2fd06f724ba930ccb7bcd374ca1b3&"
-elseif string.find(name:lower(), "combina") then
-    petImageURL = "https://cdn.discordapp.com/attachments/1389893484563009599/1389966711951851540/image.png?ex=68668ae0&is=68653960&hm=291e2153c125ec208e5a9d39d6ecb008180fb575acf07e470f802040f46e7b7c&"
-end
--- Thông tin pet cần gửi
-local petName = name
-local petPrice = price
-local petRarity = rarity
 
--- Webhook URL
-local webhookURL = "https://l.webhook.party/hook/uRuBN79THfTukv2qOHNlhMjqdR%2F2MIpajsco8LkUS32AoNr0UWaxxjEEWf3G%2FtN3kQLNN74bM%2FDB6c23Ohsgb0D%2BzZG48XhbBY9t8kUTeDACJausugxIjGHnV2YCaZkZapYfQSrz4O%2BOQhkjhIbUgIL6vYf3t%2F8cl8zTUzKidouogPXK7j3Aoveqw6zHfE8GxyBZ%2FodFuD7rf3SZPvybLtOIrP%2FELVwZQzXvq4axEGyocdQX8xK8Km%2FmSZC%2FwfVS4OJN6JaX0%2B5NJRJS4dA2mZ7k0terFmDKt2y9x5BZirIxR2c7lH9Bg7bSEJg2AEvYc4ln%2BzQrp4qvJf2%2BrWzsqJAdp5t4128AY59QKe3jkEJzym6roiJvqfaAWCMMkezpFzqmDhVNhY0%3D/Ufa1xV7IY8LeZ%2BN%2B"
-
--- Dữ liệu gửi đi
-local data = {
-    ["username"] = player.Name, -- Tên hiển thị là tên người chơi
-    ["embeds"] = {
-        {
-            ["title"] = "🐾 Brainrot 🐾",
-            ["color"] = 16753920, -- Vàng cam (có thể đổi mã màu)
-            ["fields"] = {
-                {
-                    ["name"] = "[🐶]",
-                    ["value"] = petName,
-                    ["inline"] = true
-                },
-                {
-                    ["name"] = "[💰]",
-                    ["value"] = petPrice,
-                    ["inline"] = true
-                },
-                {
-                    ["name"] = "[🎖️]",
-                    ["value"] = petRarity,
-                    ["inline"] = true
-                }
-            },
-            ["thumbnail"] = {
-                ["url"] = petImageURL
-            },
-            ["footer"] = {
-                ["text"] = "Sent from ThanhTuoi Dev"
-            },
-            ["timestamp"] = DateTime.now():ToIsoDate()
-        }
-    }
-}
-
--- Headers
-local headers = {
-    ["Content-Type"] = "application/json"
-}
-
--- Encode JSON
-local body = HttpService:JSONEncode(data)
-
--- Gửi webhook
-local http_request = http_request or request or (syn and syn.request) or (http and http.request)
-http_request({
-    Url = webhookURL,
-    Method = "POST",
-    Headers = headers,
-    Body = body
-})
-end
 function spin()
     game:GetService("ReplicatedStorage"):FindFirstChild("Packages"):FindFirstChild("Net"):FindFirstChild("RE/RainbowSpinWheelService/Spin"):FireServer()
 end
@@ -247,11 +175,6 @@ function auto_buy_or_farm()
                                             if prompt and prompt:FindFirstChild("ProximityPrompt") then
                                                 fireproximityprompt(prompt.ProximityPrompt)
                                                 done[v] = true
-                                                if rarity.Text:lower() == "secret" then
-                                                    send_webhook(displayname.Text,price.Text,rarity.Text)
-							break
-                                                end
-                                                
                                             end
                                         end
                                     else
@@ -274,11 +197,6 @@ function auto_buy_or_farm()
                                             if prompt and prompt:FindFirstChild("ProximityPrompt") then
                                                 fireproximityprompt(prompt.ProximityPrompt)
                                                 done[v] = true
-                                                if rarity.Text:lower() == "secret" then
-                                                    send_webhook(displayname.Text,price.Text,rarity.Text)
-						     break
-                                                end
-                                                
                                             end
                                         end
                                     else
